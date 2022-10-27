@@ -11,11 +11,13 @@
     <div class="wrapper">
       <Greeting msg="SSI Snap Demo" />
 
-      <nav>
+      <nav class="nav">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink v-if="true" to="/about">About</RouterLink>
       </nav>
-      <mmButton></mmButton>
+      <div class="mmButtonWrapper">
+        <mmButton></mmButton>
+      </div>
     </div>
   </header>
   <RouterView />
