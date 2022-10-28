@@ -40,7 +40,7 @@ export async function checkForVCs(snapApi?: SSISnapApi, mmAddress?: string) {
         const vcs = await snapApi.getVCs();
         if(!vcs.length) {
             console.log("No VCs found.");
-            return [] as VerifiableCredential[];
+            return undefined;
         }
         if(mmAddress) {
             vcs.map((vc: any) => {
@@ -62,9 +62,9 @@ export async function checkForVCs(snapApi?: SSISnapApi, mmAddress?: string) {
                 }
               });
         }
-        return vcs;
+        return <VerifiableCredential[]>vcs;
     } catch (err: any) {
         console.error(err.message);
-        return false;
+        return undefined;
     }
 }
