@@ -13,7 +13,9 @@
 
       <nav class="nav">
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink v-if="true" to="/about">About</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
+        <RouterLink v-if="mmStore.snapInstalled" to="/settings">Settings</RouterLink>
+        <RouterLink v-if="mmStore.snapInstalled" to="/profile">Profile</RouterLink>
       </nav>
       <div class="mmButtonWrapper">
         <mmButton></mmButton>
@@ -25,10 +27,11 @@
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
+import { useMetamaskStore } from './stores/metamask';
 import Greeting from './components/Greeting.vue';
 import mmButton from './components/mmButton.vue';
 
-console.log(window.ethereum.isConnected())
+const mmStore = useMetamaskStore();
 </script>
 
 <style scoped>
@@ -42,11 +45,16 @@ header {
   margin: 0 auto 2rem;
 }
 
+.mmButtonWrapper {
+    text-align: center;
+  }
+
 nav {
   width: 100%;
   font-size: 12px;
   text-align: center;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 nav a.router-link-exact-active {
@@ -91,6 +99,7 @@ nav a:first-of-type {
 
     padding: 1rem 0;
     margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 }
 </style>
