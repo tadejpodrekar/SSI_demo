@@ -39,3 +39,8 @@ export interface VerifiableCredential {
     },
     key: string
 }
+
+export interface SelectedDID {
+    value: string,
+    text: string,
+}

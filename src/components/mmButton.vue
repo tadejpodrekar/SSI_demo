@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import { installSnap } from '../util/snap';
+import { installSnap, initStore } from '../util/snap';
 import { useMetamaskStore } from '@/stores/metamask';
 export default {
   setup() {
@@ -31,7 +31,13 @@ export default {
           const result = await installSnap();
           if (result.isSnapInstalled) {
             const api = await result.snap?.getSSISnapApi();
+            if(!api) return;
             this.store.snapApi = api;
+            const DIDData = await initStore(api);
+            if(DIDData) {
+              this.store.selectedDID = DIDData.selectedDID;
+              this.store.availableDIDs = DIDData.availableDIDs;
+            }
 
             this.$router.push("/")
             /* const validVCs = await checkForVCs(this.store.snapApi, this.store.mmAddress);
