@@ -9,6 +9,10 @@
                 {{ option.text }}
             </option>
         </select>
+        <div class="infuraInput">
+            <input id="infuraToken" type="text" placeholder="Input infura token"/>
+            <button @click="changeInfuraToken()">Change infura token</button>
+        </div>
 
         <div>Selected: {{ mmStore.selectedDID }}</div>
     </div>
@@ -39,6 +43,16 @@ export default {
         async getVCStores() {
             const vcStores = await this.mmStore.snapApi?.getAvailableVCStores();
             if(vcStores) console.log('🚀 ~ file: SettingsView.vue ~ line 45 ~ getVCStores ~ vcStores', vcStores);
+        },
+        async changeInfuraToken() {
+            const infuraToken = (<HTMLInputElement>document.getElementById("infuraToken"))?.value;
+            console.log('🚀 ~ file: SettingsView.vue ~ line 49 ~ changeInfuraToken ~ infuraToken', infuraToken);
+            if(!infuraToken) return;
+            const res = await this.mmStore.snapApi?.changeInfuraToken(infuraToken);
+            if(res) {
+                console.log("Success changing infura token");
+                (<HTMLInputElement>document.getElementById("infuraToken")).value = "";
+            }
         },
         log(value: any) {
             console.log('🚀 ~ file: SettingsView.vue ~ line 44 ~ log ~ value', value?.target?.value);
