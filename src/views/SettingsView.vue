@@ -10,7 +10,7 @@
             </option>
         </select>
         <div class="infuraInput">
-            <input id="infuraToken" type="text" placeholder="Input infura token"/>
+            <input id="infuraToken" type="text" placeholder="Input infura token" />
             <button @click="changeInfuraToken()">Change infura token</button>
         </div>
 
@@ -32,7 +32,7 @@ export default {
     methods: {
         async togglePopups() {
             const res = await this.mmStore.snapApi?.togglePopups();
-            if (res) console.log("Success toggling popups.");
+            if (res) console.log('Success toggling popups.');
         },
         async getDIDMethods() {
             const methods = await this.mmStore.snapApi?.getAvailableMethods();
@@ -42,16 +42,18 @@ export default {
         },
         async getVCStores() {
             const vcStores = await this.mmStore.snapApi?.getAvailableVCStores();
-            if(vcStores) console.log('🚀 ~ file: SettingsView.vue ~ line 45 ~ getVCStores ~ vcStores', vcStores);
+            if (vcStores) console.log('🚀 ~ file: SettingsView.vue ~ line 45 ~ getVCStores ~ vcStores', vcStores);
         },
         async changeInfuraToken() {
-            const infuraToken = (<HTMLInputElement>document.getElementById("infuraToken"))?.value;
+            const infuraToken = (<HTMLInputElement>document.getElementById('infuraToken'))?.value;
             console.log('🚀 ~ file: SettingsView.vue ~ line 49 ~ changeInfuraToken ~ infuraToken', infuraToken);
-            if(!infuraToken) return;
+            if (!infuraToken) {
+                console.error('No infura token input.'); return;
+            };
             const res = await this.mmStore.snapApi?.changeInfuraToken(infuraToken);
-            if(res) {
-                console.log("Success changing infura token");
-                (<HTMLInputElement>document.getElementById("infuraToken")).value = "";
+            if (res) {
+                console.log('Success changing infura token');
+                (<HTMLInputElement>document.getElementById('infuraToken')).value = '';
             }
         },
         log(value: any) {

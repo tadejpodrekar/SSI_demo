@@ -27,14 +27,14 @@ export default {
         async createVC() {
             try {
                 // backend: https://bclabum.informatika.uni-mb.si/ssi-demo-backend
-                const backend_url = "https://bclabum.informatika.uni-mb.si/ssi-demo-backend";
+                const backend_url = 'https://bclabum.informatika.uni-mb.si/ssi-demo-backend';
                 let axiosConfig = {
                     headers: {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*',
                     },
                 };
-                const userName = (<HTMLInputElement>document.getElementById("nameInput"))?.value;
+                const userName = (<HTMLInputElement>document.getElementById('nameInput'))?.value;
                 console.log('🚀 ~ file: HomeView.vue ~ line 37 ~ createVC ~ userName', userName)
                 let body = { name: userName, id: 'did:ethr:rinkeby:' + this.mmStore.mmAddress };
                 let VC = await axios
@@ -51,13 +51,13 @@ export default {
                 // console.log(JSON.parse(JSON.stringify(this.mmStore.verifiableCredential)));
                 const res = await this.mmStore.snapApi?.saveVC(VC);
                 if (res) {
-                    console.log("Saved VC.")
+                    console.log('Saved VC.')
                     const validVCs = await checkForVCs(this.mmStore.snapApi, this.mmStore.mmAddress);
                     console.log('🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs', validVCs);
                     if(validVCs) {
                         this.mmStore.vcs = validVCs;
                     }
-                } else console.log("VC not saved.")
+                } else console.log('VC not saved.');
             } catch (err) {
                 console.error(err);
             }

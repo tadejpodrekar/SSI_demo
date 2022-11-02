@@ -1,7 +1,6 @@
 import type {
     MetaMaskSSISnap
 } from '@blockchain-lab-um/ssi-snap-connector';
-import type { SSISnapApi } from '@blockchain-lab-um/ssi-snap-types';
 
 export interface SnapInitializationResponse {
     isSnapInstalled: boolean;
@@ -11,7 +10,7 @@ export interface SnapInitializationResponse {
 export interface SnapInstallationParams {
     snapId?: string,
     version?: string,
-    supportedMethods?: ("did:ethr" | "did:key")[] | undefined,
+    supportedMethods?: ('did:ethr' | 'did:key')[] | undefined,
 }
 
 export interface VerifiableCredential {

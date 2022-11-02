@@ -6,7 +6,7 @@ import type {
     SelectedDID
 } from './interfaces';
 
-const vcIssuerId = "did:ethr:rinkeby:0x0241abd662da06d0af2f0152a80bc037f65a7f901160cfe1eb35ef3f0c532a2a4d";
+const vcIssuerId = 'did:ethr:rinkeby:0x0241abd662da06d0af2f0152a80bc037f65a7f901160cfe1eb35ef3f0c532a2a4d';
 let isInstalled = false;
 
 export async function installSnap(snapId?: string) {
@@ -15,7 +15,7 @@ export async function installSnap(snapId?: string) {
 
         const snapInstallationParams: SnapInstallationParams = {
             version: 'latest',
-            supportedMethods: ['did:ethr'],
+            supportedMethods: ['did:ethr', 'did:key'],
         }
         if (snapId) snapInstallationParams.snapId = snapId;
 
@@ -37,10 +37,10 @@ export async function isSSISnapInstalled() {
 
 export async function checkForVCs(snapApi?: SSISnapApi, mmAddress?: string) {
     try {
-        if (!snapApi) throw new Error("No snap API found.");
+        if (!snapApi) throw new Error('No snap API found.');
         const vcs = await snapApi.getVCs();
         if (!vcs.length) {
-            console.log("No VCs found.");
+            console.log('No VCs found.');
             return undefined;
         }
         if (mmAddress) {
@@ -74,14 +74,14 @@ export async function initStore(snapApi: SSISnapApi) {
     let selectedDID, availableDIDs;
     const method = await snapApi?.getMethod();
     if (method) {
-        selectedDID = { value: method, text: method.split(":")[1] };
+        selectedDID = { value: method, text: method.split(':')[1] };
     }
 
     const methods = await snapApi?.getAvailableMethods();
     if (methods) {
         console.log(methods);
         availableDIDs = methods.map((method) => {
-            return <SelectedDID>{ value: method, text: method.split(":")[1] };
+            return <SelectedDID>{ value: method, text: method.split(':')[1] };
         });
     }
 

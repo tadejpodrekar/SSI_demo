@@ -31,15 +31,15 @@ export default {
           const result = await installSnap();
           if (result.isSnapInstalled) {
             const api = await result.snap?.getSSISnapApi();
-            if(!api) return;
+            if (!api) return;
             this.store.snapApi = api;
             const DIDData = await initStore(api);
-            if(DIDData) {
+            if (DIDData) {
               this.store.selectedDID = DIDData.selectedDID;
               this.store.availableDIDs = DIDData.availableDIDs;
             }
 
-            this.$router.push("/")
+            this.$router.push('/')
             /* const validVCs = await checkForVCs(this.store.snapApi, this.store.mmAddress);
             console.log('🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs', validVCs);
             if(!validVCs) return;
@@ -51,7 +51,7 @@ export default {
                 'Access-Control-Allow-Origin': '*',
               },
             };
-            let body = { name: "TestName", id: 'did:ethr:rinkeby:' + this.store.mmAddress };
+            let body = { name: 'TestName', id: 'did:ethr:rinkeby:' + this.store.mmAddress };
             let VC = await axios
               .post(backend_url + '/api/vc/issue-vc', body, axiosConfig)
               .then(function (response: any) {
@@ -70,7 +70,7 @@ export default {
             console.log('🚀 ~ file: mmButton.vue ~ line 39 ~ connectToMM ~ res', res);
             const vcs = await api?.getVCs();
 
-            console.log("list of VCs:", vcs);*/
+            console.log('list of VCs:', vcs);*/
           }
         } catch (err) {
           console.error(err);
