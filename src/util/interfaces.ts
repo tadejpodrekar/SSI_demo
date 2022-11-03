@@ -39,7 +39,12 @@ export interface VerifiableCredential {
     key: string
 }
 
-export interface SelectedDID {
+export interface DIDMethod {
     value: string,
     text: string,
+}
+
+export interface DIDInfo {
+    selectedDID: DIDMethod | undefined,
+    availableDIDs: DIDMethod[] | undefined,
 }

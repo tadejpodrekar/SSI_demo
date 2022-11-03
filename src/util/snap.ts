@@ -3,11 +3,12 @@ import type { SSISnapApi } from '@blockchain-lab-um/ssi-snap-types';
 import type {
     SnapInstallationParams,
     VerifiableCredential,
-    SelectedDID
+    DIDMethod,
+    DIDInfo,
+    SnapInitializationResponse
 } from './interfaces';
 
 const vcIssuerId = 'did:ethr:rinkeby:0x0241abd662da06d0af2f0152a80bc037f65a7f901160cfe1eb35ef3f0c532a2a4d';
-let isInstalled = false;
 
 export async function installSnap(snapId?: string) {
     try {
@@ -22,17 +23,11 @@ export async function installSnap(snapId?: string) {
         const metamaskSSISnap = await enableSSISnap(snapInstallationParams);
 
         console.log('Snap installed!');
-        isInstalled = true;
-        return { isSnapInstalled: true, snap: metamaskSSISnap };
+        return <SnapInitializationResponse>{ isSnapInstalled: true, snap: metamaskSSISnap };
     } catch (e) {
         console.error(e);
-        isInstalled = false;
-        return { isSnapInstalled: false };
+        return <SnapInitializationResponse>{ isSnapInstalled: false };
     }
-}
-
-export async function isSSISnapInstalled() {
-    return isInstalled;
 }
 
 export async function checkForVCs(snapApi?: SSISnapApi, mmAddress?: string) {
@@ -74,16 +69,16 @@ export async function initStore(snapApi: SSISnapApi) {
     let selectedDID, availableDIDs;
     const method = await snapApi?.getMethod();
     if (method) {
-        selectedDID = { value: method, text: method.split(':')[1] };
+        selectedDID = <DIDMethod>{ value: method, text: method.split(':')[1] };
     }
 
     const methods = await snapApi?.getAvailableMethods();
     if (methods) {
         console.log(methods);
         availableDIDs = methods.map((method) => {
-            return <SelectedDID>{ value: method, text: method.split(':')[1] };
+            return <DIDMethod>{ value: method, text: method.split(':')[1] };
         });
     }
 
-    return { selectedDID, availableDIDs }
+    return <DIDInfo>{ selectedDID, availableDIDs }
 }

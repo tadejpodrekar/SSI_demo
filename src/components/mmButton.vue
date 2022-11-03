@@ -1,6 +1,6 @@
 <template>
-  <button class="mmButton" v-if="!store.snapInstalled" @click="connectToMM()">Import metamask</button>
-  <div id="mmAddress" v-if="store.snapInstalled">{{ store.mmAddress?.substring(0, 10) + '...' }}</div>
+  <button class="mmButton" v-if="!mmStore.snapInstalled" @click="connectToMM()">Import metamask</button>
+  <div id="mmAddress" v-if="mmStore.snapInstalled">{{ mmStore.mmAddress?.substring(0, 10) + '...' }}</div>
 </template>
 
 <script lang="ts">
@@ -8,11 +8,11 @@ import { installSnap, initStore } from '../util/snap';
 import { useMetamaskStore } from '@/stores/metamask';
 export default {
   setup() {
-    const store = useMetamaskStore();
-    return { store }
+    const mmStore = useMetamaskStore();
+    return { mmStore }
   },
   created() {
-    console.log(this.store.snapInstalled)
+    console.log(this.mmStore.snapInstalled)
   },
   methods: {
     async connectToMM() {
@@ -21,7 +21,7 @@ export default {
           .request({ method: 'eth_requestAccounts' })
           .then((result: (string | undefined)[]) => {
             console.log('Setting MetaMask address!');
-            this.store.mmAddress = result[0];
+            this.mmStore.mmAddress = result[0];
           })
           .catch((err: Error) => {
             console.error(err);
@@ -32,15 +32,15 @@ export default {
           if (result.isSnapInstalled) {
             const api = await result.snap?.getSSISnapApi();
             if (!api) return;
-            this.store.snapApi = api;
+            this.mmStore.snapApi = api;
             const DIDData = await initStore(api);
             if (DIDData) {
-              this.store.selectedDID = DIDData.selectedDID;
-              this.store.availableDIDs = DIDData.availableDIDs;
+              this.mmStore.selectedDID = DIDData.selectedDID;
+              this.mmStore.availableDIDs = DIDData.availableDIDs;
             }
 
             this.$router.push('/')
-            /* const validVCs = await checkForVCs(this.store.snapApi, this.store.mmAddress);
+            /* const validVCs = await checkForVCs(this.mmStore.snapApi, this.mmStore.mmAddress);
             console.log('🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs', validVCs);
             if(!validVCs) return;
             // backend: https://bclabum.informatika.uni-mb.si/ssi-demo-backend
@@ -51,7 +51,7 @@ export default {
                 'Access-Control-Allow-Origin': '*',
               },
             };
-            let body = { name: 'TestName', id: 'did:ethr:rinkeby:' + this.store.mmAddress };
+            let body = { name: 'TestName', id: 'did:ethr:rinkeby:' + this.mmStore.mmAddress };
             let VC = await axios
               .post(backend_url + '/api/vc/issue-vc', body, axiosConfig)
               .then(function (response: any) {
@@ -64,8 +64,8 @@ export default {
             
 
             
-            const vc = JSON.parse(JSON.stringify(this.store.verifiableCredential));
-            console.log(JSON.parse(JSON.stringify(this.store.verifiableCredential)));
+            const vc = JSON.parse(JSON.stringify(this.mmStore.verifiableCredential));
+            console.log(JSON.parse(JSON.stringify(this.mmStore.verifiableCredential)));
             const res = await api?.saveVC(vc);
             console.log('🚀 ~ file: mmButton.vue ~ line 39 ~ connectToMM ~ res', res);
             const vcs = await api?.getVCs();
