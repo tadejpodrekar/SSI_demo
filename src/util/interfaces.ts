@@ -41,7 +41,7 @@ export interface VerifiableCredential {
 
 export interface DIDMethod {
     value: string,
-    text: string,
+    text: string | undefined,
 }
 
 export interface DIDInfo {

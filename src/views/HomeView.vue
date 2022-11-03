@@ -4,15 +4,22 @@
         <div v-if="mmStore.snapInstalled" id="vcForm">
             <label>Insert your name: </label>
             <input type="text" id="nameInput" />
-            <button @click="createVC()">Create VC</button>
+            <button @click="VCCreate()">Create VC</button>
         </div>
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useMetamaskStore } from '@/stores/metamask';
-import { checkForVCs } from '@/util/snap';
-import axios from 'axios';
+import { createVC } from '@/util/snap';
+
+const mmStore = useMetamaskStore();
+
+const VCCreate = () => {
+    const nameInput = document.getElementById('nameInput') as HTMLInputElement;
+    createVC(nameInput.value, mmStore.mmAddress, mmStore.snapApi);
+}
+/*
 export default {
     setup() {
         const mmStore = useMetamaskStore();
@@ -61,9 +68,9 @@ export default {
             } catch (err) {
                 console.error(err);
             }
-        }
+        } 
     }
-}
+}*/
 </script>
 
 <style>

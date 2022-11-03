@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { enableSSISnap } from '@blockchain-lab-um/ssi-snap-connector';
 import type { SSISnapApi } from '@blockchain-lab-um/ssi-snap-types';
 import type {
@@ -28,6 +29,24 @@ export async function installSnap(snapId?: string) {
         console.error(e);
         return <SnapInitializationResponse>{ isSnapInstalled: false };
     }
+}
+
+export async function initStore(snapApi: SSISnapApi) {
+    let selectedDID, availableDIDs;
+    const method = await snapApi?.getMethod();
+    if (method) {
+        selectedDID = <DIDMethod>{ value: method, text: method.split(':')[1] };
+    }
+
+    const methods = await snapApi?.getAvailableMethods();
+    if (methods) {
+        console.log(methods);
+        availableDIDs = methods.map((method) => {
+            return <DIDMethod>{ value: method, text: method.split(':')[1] };
+        });
+    }
+
+    return <DIDInfo>{ selectedDID, availableDIDs }
 }
 
 export async function checkForVCs(snapApi?: SSISnapApi, mmAddress?: string) {
@@ -65,20 +84,45 @@ export async function checkForVCs(snapApi?: SSISnapApi, mmAddress?: string) {
     }
 }
 
-export async function initStore(snapApi: SSISnapApi) {
-    let selectedDID, availableDIDs;
-    const method = await snapApi?.getMethod();
-    if (method) {
-        selectedDID = <DIDMethod>{ value: method, text: method.split(':')[1] };
-    }
+export async function createVC(userName: string, mmAddress?: string, snapApi?: SSISnapApi) {
+    try {
+        if(!snapApi) throw new Error('No snap API found.');
+        if(!mmAddress) throw new Error('No MM address found.');
+        // backend: https://bclabum.informatika.uni-mb.si/ssi-demo-backend
+        const backend_url = 'https://bclabum.informatika.uni-mb.si/ssi-demo-backend';
+        let axiosConfig = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+        };
+        // const userName = (<HTMLInputElement>document.getElementById('nameInput'))?.value;
+        console.log('🚀 ~ file: HomeView.vue ~ line 37 ~ createVC ~ userName', userName)
+        let body = { name: userName, id: 'did:ethr:rinkeby:' + mmAddress };
+        let VC = await axios
+            .post(backend_url + '/api/vc/issue-vc', body, axiosConfig)
+            .then(function (response: any) {
+                return response.data;
+            })
+            .catch(function (error: any) {
+                console.log(error);
+            });
+        console.log('🚀 ~ file: mmButton.vue ~ line 52 ~ connectToMM ~ VC', VC);
 
-    const methods = await snapApi?.getAvailableMethods();
-    if (methods) {
-        console.log(methods);
-        availableDIDs = methods.map((method) => {
-            return <DIDMethod>{ value: method, text: method.split(':')[1] };
-        });
+        const res = await snapApi?.saveVC(VC);
+        if (res) {
+            console.log('Saved VC.');
+            return VC;
+            // const validVCs = await checkForVCs(snapApi, mmAddress);
+            // console.log('🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs', validVCs);
+            // if(validVCs) {
+            //     vcs = validVCs;
+            // }
+        } else {
+            console.log('VC not saved.');
+            return undefined;
+        }
+    } catch (err) {
+        console.error(err);
     }
-
-    return <DIDInfo>{ selectedDID, availableDIDs }
 }
