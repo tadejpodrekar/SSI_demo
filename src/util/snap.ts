@@ -13,15 +13,16 @@ const backend_url = "https://bclabum.informatika.uni-mb.si/ssi-demo-backend";
 const vcIssuerId =
     "did:ethr:rinkeby:0x0241abd662da06d0af2f0152a80bc037f65a7f901160cfe1eb35ef3f0c532a2a4d";
 
-export async function installSnap(snapId?: string) {
+export async function installSnap(snapId?: string, supportedMethods?: ("did:ethr" | "did:key")[]): Promise<SnapInitializationResponse> {
     try {
         console.log("Connecting to snap...");
-
+        if (!supportedMethods) supportedMethods = ["did:ethr", "did:key"];
         const snapInstallationParams: SnapInstallationParams = {
             version: "latest",
-            supportedMethods: ["did:ethr", "did:key"],
+            supportedMethods,
         };
         if (snapId) snapInstallationParams.snapId = snapId;
+        if (supportedMethods) snapInstallationParams.supportedMethods = supportedMethods;
 
         const metamaskSSISnap = await enableSSISnap(snapInstallationParams);
 
@@ -128,10 +129,10 @@ export async function saveVC(VC: VerifiableCredential, snapApi?: SSISnapApi) {
     }
 }
 
-export async function createVP(VCid: string, snapApi?: SSISnapApi) {
+export async function createVP(VC: VerifiableCredential, snapApi?: SSISnapApi) {
     try {
         if (!snapApi) throw new Error("No snap API found.");
-        const res = await snapApi?.getVP(VCid);
+        const res = await snapApi?.getVP(VC.key);
         if (res) {
             console.log("Created VP.");
             return res;
