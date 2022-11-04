@@ -1,3 +1,4 @@
+import axios from "axios";
 import { enableSSISnap } from "@blockchain-lab-um/ssi-snap-connector";
 import type { SSISnapApi } from "@blockchain-lab-um/ssi-snap-types";
 import type {
@@ -8,6 +9,7 @@ import type {
   SnapInitializationResponse,
 } from "./interfaces";
 
+const backend_url = "https://bclabum.informatika.uni-mb.si/ssi-demo-backend";
 const vcIssuerId =
   "did:ethr:rinkeby:0x0241abd662da06d0af2f0152a80bc037f65a7f901160cfe1eb35ef3f0c532a2a4d";
 
@@ -63,6 +65,50 @@ export async function checkForVCs(snapApi?: SSISnapApi, mmAddress?: string) {
   } catch (err: any) {
     console.error(err.message);
     return undefined;
+  }
+}
+
+export async function createVC(userName: string, mmAddress?: string, snapApi?: SSISnapApi) {
+  try {
+    if(!snapApi) throw new Error("No snap API found.");
+    if(!mmAddress) throw new Error("No metamask address found.");
+    let axiosConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    };
+    let body = {
+      name: userName,
+      id: "did:ethr:rinkeby:" + mmAddress,
+    };
+    let VC = await axios
+      .post(backend_url + "/api/vc/issue-vc", body, axiosConfig)
+      .then((response: any) => {
+        return response.data;
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+    console.log("🚀 ~ file: mmButton.vue ~ line 52 ~ connectToMM ~ VC", VC);
+
+    const res = await snapApi?.saveVC(VC);
+    if (res) {
+      console.log("Saved VC.");
+      const validVCs = await checkForVCs(
+        snapApi,
+        mmAddress
+      );
+      console.log(
+        "🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs",
+        validVCs
+      );
+      if (validVCs) {
+        return validVCs;
+      }
+    } else console.log("VC not saved.");
+  } catch (err) {
+    console.error(err);
   }
 }
 
