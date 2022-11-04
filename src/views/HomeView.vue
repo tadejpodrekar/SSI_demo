@@ -16,7 +16,7 @@ import { createVC } from '@/util/snap';
 const mmStore = useMetamaskStore();
 
 function callCreate() {
-    createVC((<HTMLInputElement>document.getElementById('nameInput')).value, this.mmStore.mmAddress, this.mmStore.snapApi);
+    createVC((<HTMLInputElement>document.getElementById('nameInput')).value, mmStore.mmAddress, mmStore.snapApi);
 }
 </script>
 
