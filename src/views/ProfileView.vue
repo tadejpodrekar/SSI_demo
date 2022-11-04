@@ -5,31 +5,26 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useMetamaskStore } from "@/stores/metamask";
 import { checkForVCs } from "@/util/snap";
-export default {
-  setup() {
-    const mmStore = useMetamaskStore();
-    return { mmStore };
-  },
-  methods: {
-    async logVCs() {
-      const validVCs = await checkForVCs(
-        this.mmStore.snapApi,
-        this.mmStore.mmAddress
-      );
-      console.log(
-        "🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs",
-        validVCs
-      );
-      if (validVCs) {
-        this.mmStore.vcs = validVCs;
-      }
-      console.log(this.mmStore.vcs?.values);
-    },
-  },
-};
+
+const mmStore = useMetamaskStore();
+
+async function logVCs() {
+  const validVCs = await checkForVCs(
+    mmStore.snapApi,
+    mmStore.mmAddress
+  );
+  console.log(
+    "🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs",
+    validVCs
+  );
+  if (validVCs) {
+    mmStore.vcs = validVCs;
+  }
+  console.log(mmStore.vcs?.values);
+}
 </script>
 
 <style>

@@ -9,25 +9,14 @@
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useMetamaskStore } from '@/stores/metamask';
 import { createVC } from '@/util/snap';
-import axios from 'axios';
-export default {
-    setup() {
-        const mmStore = useMetamaskStore();
-        return { mmStore }
-    },
-    created() {
-        console.log(this.mmStore.snapApi)
-        console.log(this.mmStore.mmAddress)
-        console.log(this.mmStore.snapInstalled)
-    },
-    methods: {
-        callCreate() {
-            createVC((<HTMLInputElement>document.getElementById('nameInput')).value, this.mmStore.mmAddress, this.mmStore.snapApi);
-        }
-    }
+
+const mmStore = useMetamaskStore();
+
+function callCreate() {
+    createVC((<HTMLInputElement>document.getElementById('nameInput')).value, this.mmStore.mmAddress, this.mmStore.snapApi);
 }
 </script>
 
