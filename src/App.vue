@@ -9,13 +9,17 @@
     />
 
     <div class="wrapper">
-      <Greeting msg="SSI Snap Demo" />
+      <greetingTitle msg="SSI Snap Demo" />
 
       <nav class="nav">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
-        <RouterLink v-if="mmStore.snapInstalled" to="/settings">Settings</RouterLink>
-        <RouterLink v-if="mmStore.snapInstalled" to="/profile">Profile</RouterLink>
+        <RouterLink v-if="mmStore.snapInstalled" to="/settings"
+          >Settings</RouterLink
+        >
+        <RouterLink v-if="mmStore.snapInstalled" to="/profile"
+          >Profile</RouterLink
+        >
       </nav>
       <div class="mmButtonWrapper">
         <mmButton></mmButton>
@@ -26,10 +30,10 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
-import { useMetamaskStore } from './stores/metamask';
-import Greeting from './components/Greeting.vue';
-import mmButton from './components/mmButton.vue';
+import { RouterLink, RouterView } from "vue-router";
+import { useMetamaskStore } from "./stores/metamask";
+import greetingTitle from "./components/greetingTitle.vue";
+import mmButton from "./components/mmButton.vue";
 
 const mmStore = useMetamaskStore();
 </script>
@@ -46,8 +50,8 @@ header {
 }
 
 .mmButtonWrapper {
-    text-align: center;
-  }
+  text-align: center;
+}
 
 nav {
   width: 100%;

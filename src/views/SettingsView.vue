@@ -48,7 +48,8 @@ export default {
             const infuraToken = (<HTMLInputElement>document.getElementById('infuraToken'))?.value;
             console.log('🚀 ~ file: SettingsView.vue ~ line 49 ~ changeInfuraToken ~ infuraToken', infuraToken);
             if (!infuraToken) {
-                console.error('No infura token input.'); return;
+                console.error('No infura token input.');
+                return;
             };
             const res = await this.mmStore.snapApi?.changeInfuraToken(infuraToken);
             if (res) {

@@ -1,26 +1,30 @@
 <template>
-  <button class="mmButton" v-if="!mmStore.snapInstalled" @click="connectToMM()">Import metamask</button>
-  <div id="mmAddress" v-if="mmStore.snapInstalled">{{ mmStore.mmAddress?.substring(0, 10) + '...' }}</div>
+  <button class="mmButton" v-if="!mmStore.snapInstalled" @click="connectToMM()">
+    Import metamask
+  </button>
+  <div id="mmAddress" v-if="mmStore.snapInstalled">
+    {{ mmStore.mmAddress?.substring(0, 10) + "..." }}
+  </div>
 </template>
 
 <script lang="ts">
-import { installSnap, initStore } from '../util/snap';
-import { useMetamaskStore } from '@/stores/metamask';
+import { installSnap, initStore } from "../util/snap";
+import { useMetamaskStore } from "@/stores/metamask";
 export default {
   setup() {
     const mmStore = useMetamaskStore();
-    return { mmStore }
+    return { mmStore };
   },
   created() {
-    console.log(this.mmStore.snapInstalled)
+    console.log(this.mmStore.snapInstalled);
   },
   methods: {
     async connectToMM() {
       if (window.ethereum) {
         window.ethereum
-          .request({ method: 'eth_requestAccounts' })
+          .request({ method: "eth_requestAccounts" })
           .then((result: (string | undefined)[]) => {
-            console.log('Setting MetaMask address!');
+            console.log("Setting MetaMask address!");
             this.mmStore.mmAddress = result[0];
           })
           .catch((err: Error) => {
@@ -39,7 +43,7 @@ export default {
               this.mmStore.availableDIDs = DIDData.availableDIDs;
             }
 
-            this.$router.push('/')
+            this.$router.push("/");
             /* const validVCs = await checkForVCs(this.mmStore.snapApi, this.mmStore.mmAddress);
             console.log('🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs', validVCs);
             if(!validVCs) return;
@@ -76,19 +80,24 @@ export default {
           console.error(err);
         }
       }
-    }
+    },
   },
-}
+};
 </script>
 
 <style>
 .mmButton {
   align-items: center;
   appearance: none;
-  background-image: radial-gradient(100% 100% at 100% 0, #8198ff 0, #6e54ff 100%);
+  background-image: radial-gradient(
+    100% 100% at 100% 0,
+    #8198ff 0,
+    #6e54ff 100%
+  );
   border: 0;
   border-radius: 6px;
-  box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
   box-sizing: border-box;
   color: #fff;
   cursor: pointer;
@@ -104,7 +113,7 @@ export default {
   position: relative;
   text-align: left;
   text-decoration: none;
-  transition: box-shadow .15s, transform .15s;
+  transition: box-shadow 0.15s, transform 0.15s;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
@@ -116,10 +125,15 @@ export default {
 #mmAddress {
   align-items: center;
   appearance: none;
-  background-image: radial-gradient(100% 100% at 100% 0, #8198ff 0, #6e54ff 100%);
+  background-image: radial-gradient(
+    100% 100% at 100% 0,
+    #8198ff 0,
+    #6e54ff 100%
+  );
   border: 0;
   border-radius: 6px;
-  box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
   box-sizing: border-box;
   color: #fff;
   display: inline-flex;
@@ -137,11 +151,13 @@ export default {
 }
 
 .mmButton:focus {
-  box-shadow: #6247ff 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #6247ff 0 -3px 0 inset;
+  box-shadow: #6247ff 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #6247ff 0 -3px 0 inset;
 }
 
 .mmButton:hover {
-  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #6247ff 0 -3px 0 inset;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #6247ff 0 -3px 0 inset;
   transform: translateY(-2px);
 }
 

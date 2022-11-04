@@ -36,7 +36,7 @@ export default {
                 };
                 const userName = (<HTMLInputElement>document.getElementById('nameInput'))?.value;
                 console.log('🚀 ~ file: HomeView.vue ~ line 37 ~ createVC ~ userName', userName)
-                let body = { name: userName, id: 'did:ethr:rinkeby:' + this.mmStore.mmAddress };
+                let body = { name: userName, id: ('did:ethr:rinkeby:' + this.mmStore.mmAddress) };
                 let VC = await axios
                     .post(backend_url + '/api/vc/issue-vc', body, axiosConfig)
                     .then(function (response: any) {
