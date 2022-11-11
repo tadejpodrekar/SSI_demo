@@ -4,19 +4,31 @@
         <div v-if="mmStore.snapInstalled" id="vcForm">
             <label>Insert your name: </label>
             <input type="text" id="nameInput" />
-            <button @click="callCreate()">Create VC</button>
+            <button @click="VCCreate()">Create VC</button>
+            <button @click="VPCreate()">Create VP</button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { useMetamaskStore } from '@/stores/metamask';
-import { createVC } from '@/util/snap';
+import { createVC, createVP, checkForVCs } from '@/util/snap';
 
 const mmStore = useMetamaskStore();
 
-function callCreate() {
-    createVC((<HTMLInputElement>document.getElementById('nameInput')).value, mmStore.mmAddress, mmStore.snapApi);
+const VCCreate = () => {
+    const nameInput = document.getElementById('nameInput') as HTMLInputElement;
+    createVC(nameInput.value, mmStore.mmAddress, mmStore.snapApi);
+}
+
+const VPCreate = async () => {
+    const VCs = await checkForVCs(mmStore?.snapApi);
+    if (!VCs) {
+        console.error('No VCs found.');
+        return;
+    }
+    const res = await createVP(VCs[0], mmStore.snapApi);
+    console.log('🚀 ~ file: HomeView.vue ~ line 32 ~ VPCreate ~ res', res);
 }
 </script>
 

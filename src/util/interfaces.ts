@@ -38,8 +38,8 @@ export interface VerifiableCredential {
 }
 
 export interface DIDMethod {
-  value: string;
-  text: string;
+    value: string,
+    text: string | undefined,
 }
 
 export interface DIDInfo {
