@@ -1,21 +1,23 @@
 <template>
-  <button class="mmButton" v-if="!mmStore.snapInstalled" @click="connectToMM()">
-    Import metamask
-  </button>
+  <Button label="Import metamask" :loading="isLoading" v-if="!mmStore.snapInstalled" @click="connectToMM()" />
   <div id="mmAddress" v-if="mmStore.snapInstalled">
     {{ mmStore.mmAddress?.substring(0, 10) + "..." }}
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { installSnap, initStore } from "../util/snap";
 import { useMetamaskStore } from "@/stores/metamask";
+import Button from 'primevue/button';
 
 const mmStore = useMetamaskStore();
 const router = useRouter();
+const isLoading = ref(false);
 
 async function connectToMM() {
+  isLoading.value = !isLoading.value;
   if (window.ethereum) {
     window.ethereum
       .request({ method: "eth_requestAccounts" })
