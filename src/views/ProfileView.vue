@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
     <h1>Available VCs</h1>
-    <button @click="logVCs()">Log vcs</button>
+    <Button label="Log vcs" @click="logVCs()" />
   </div>
 </template>
 

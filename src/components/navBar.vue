@@ -1,6 +1,5 @@
 <template>
-    <TabMenu :model="items" :activeIndex="activeItem" @tabChange="onTabChange" />
-
+    <TabMenu :model="items" @tabChange="onTabChange" />
 </template>
 
 <script setup lang="ts">
