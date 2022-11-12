@@ -10,7 +10,8 @@
 
     <div class="wrapper">
       <greetingTitle msg="SSI Snap Demo" />
-
+      <navBar />
+      <!-- Old nav
       <nav class="nav">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
@@ -21,6 +22,7 @@
           >Profile</RouterLink
         >
       </nav>
+      -->
       <div class="mmButtonWrapper">
         <mmButton></mmButton>
       </div>
@@ -33,6 +35,7 @@
 import { RouterLink, RouterView } from "vue-router";
 import { useMetamaskStore } from "./stores/metamask";
 import greetingTitle from "./components/greetingTitle.vue";
+import navBar from "./components/navBar.vue";
 import mmButton from "./components/mmButton.vue";
 
 const mmStore = useMetamaskStore();
