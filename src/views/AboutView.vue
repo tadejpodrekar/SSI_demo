@@ -9,6 +9,7 @@
 </script>
 
 <style>
+/*
 @media (min-width: 1024px) {
   .about {
     display: grid;
@@ -18,5 +19,5 @@
     justify-items: center;
     align-content: center;
   }
-}
+} */
 </style>

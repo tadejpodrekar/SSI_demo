@@ -4,8 +4,8 @@
       alt="SSI logo"
       class="logo"
       src="https://blockchain-lab-um.github.io/ssi-snap-docs/img/ssi_snap_logo_2.svg"
-      width="125"
-      height="125"
+      width="60"
+      height="60"
     />
 
     <div class="wrapper">
@@ -39,7 +39,14 @@ const mmStore = useMetamaskStore();
 </script>
 
 <style scoped>
-header {
+.nav a {
+  margin: 0.5rem;
+}
+
+html {
+  padding: 0rem 1rem 0rem 1rem;
+}
+/* header {
   line-height: 1.5;
   max-height: 100vh;
 }
@@ -105,5 +112,5 @@ nav a:first-of-type {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
-}
+} */
 </style>

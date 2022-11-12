@@ -28,6 +28,7 @@ async function logVCs() {
 </script>
 
 <style>
+/*
 @media (min-width: 1024px) {
   .profile {
     display: grid;
@@ -37,5 +38,5 @@ async function logVCs() {
     justify-items: center;
     align-content: center;
   }
-}
+} */
 </style>

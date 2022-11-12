@@ -1,25 +1,21 @@
 <template>
     <div class="settings">
         <h1>This is a settings page</h1>
-        <button @click="togglePopups()">Toggle popups</button>
-        <button @click="getDIDMethods()">Get DID methods</button>
-        <button @click="getVCStores()">Get VC stores</button>
-        <select v-model="mmStore.selectedDID">
-            <option v-for="option in mmStore.availableDIDs" :value="option">
-                {{ option.text }}
-            </option>
-        </select>
+        <Button label="Toggle popups" @click="togglePopups()" />
+        <Button label="Get DID methods" @click="getDIDMethods()" />
+        <Button label="Get VC stores" @click="getVCStores()" />
+        <Dropdown v-model="mmStore.selectedDID" :options="mmStore.availableDIDs" optionLabel="text" />
         <div class="infuraInput">
-            <input id="infuraToken" type="text" placeholder="Input infura token" />
-            <button @click="changeInfuraToken()">Change infura token</button>
+            <InputText id="infuraToken" type="text" placeholder="Input infura token" />
+            <Button label="Change infura token" @click="changeInfuraToken()" />
         </div>
-
         <div>Selected: {{ mmStore.selectedDID }}</div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { useMetamaskStore } from '@/stores/metamask';
+import type InputText from 'primevue/inputtext';
 
 const mmStore = useMetamaskStore();
 mmStore.$subscribe((mutation, state) => {
@@ -65,6 +61,7 @@ function log(value: any) {
 </script>
 
 <style>
+/*
 @media (min-width: 1024px) {
     .settings {
         display: grid;
@@ -74,6 +71,6 @@ function log(value: any) {
         justify-items: center;
         align-content: center;
     }
-}
+} */
 </style>
   
