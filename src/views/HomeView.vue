@@ -1,51 +1,46 @@
 <template>
     <div class="home">
-        <Toast position="bottom-right" group="br" />
         <h1 id="title" v-if="!mmStore.snapInstalled">Please connect to metamask</h1>
         <div v-if="mmStore.snapInstalled" id="vcForm">
             <InputText id="nameInput" type="username" class="p-inputtext-sm" placeholder="Username" />
-            <Button :loading="loadingVC" @click="VCCreate()" label="Create VC" class="p-button-sm" />
-            <Button :loading="loadingVP" @click="VPCreate()" label="Create VP" class="p-button-sm" />
-            <Button @click="showError()" label="Test error" class="p-button-danger" />
+            <Button :loading="loadingVC.value" @click="funcWrapper(toast, VCCreate, loadingVC)" label="Create VC" class="p-button-sm" />
+            <Button :loading="loadingVP.value" @click="funcWrapper(toast, VPCreate, loadingVP)" label="Create VP" class="p-button-sm" />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive } from 'vue';
+import { useGeneralStore } from '@/stores/general';
 import { useMetamaskStore } from '@/stores/metamask';
 import { createVC, createVP, checkForVCs } from '@/util/snap';
-import { useToast } from "primevue/usetoast";
+import { funcWrapper } from '@/util/general';
+import type { ToastServiceMethods } from 'primevue/toastservice';
 
 const mmStore = useMetamaskStore();
-const toast = useToast();
-const loadingVC = ref(false);
-const loadingVP = ref(false);
+const generalStore = useGeneralStore();
 
-const showError = (message: string = 'Error Message', detail: string = 'Message Content') => {
-    toast.add({ severity: 'error', summary: message, detail: detail, group: 'br', life: 3000 });
-}
-
-const showSuccess = (title: string = 'Success', message: string = 'Message Content') => {
-    toast.add({ severity: 'success', summary: title, detail: message, group: 'br', life: 3000 });
-}
+const toast = generalStore.toast as ToastServiceMethods;
+const loadingVC = reactive({value: false});
+const loadingVP = reactive({value: false});
 
 const VCCreate = async () => {
     try {
-        loadingVC.value = true;
-        const nameInput = document.getElementById('nameInput') as HTMLInputElement;
-        const vcs = await createVC(nameInput.value, mmStore.mmAddress, mmStore.snapApi);
-        if(!vcs) {
-            showError('Error', 'No VC created');
-            loadingVC.value = false;
+        const nameInput = document.getElementById('nameInput');
+        nameInput?.classList.remove('p-invalid');
+        const nameInputValue = (nameInput as HTMLInputElement).value;
+        if(!nameInputValue) {
+            nameInput?.classList.add('p-invalid');
             return;
         }
-        showSuccess('VC created');
-        loadingVC.value = false;
+
+        const vcs = await createVC(nameInputValue, mmStore.mmAddress, mmStore.snapApi);
+        if(!vcs) {
+            throw new Error('Failed to create VC');
+        }
+        return 'VC created';
     } catch (err: any) {
-        showError('Error creating VC', err.message);
-        console.error(err);
-        loadingVC.value = false;
+        throw new Error(err.message);
     }
 }
 
@@ -59,16 +54,11 @@ const VPCreate = async () => {
         const vp = await createVP(VCs[0], mmStore.snapApi);
         console.log('🚀 ~ file: HomeView.vue ~ line 32 ~ VPCreate ~ res', vp);
         if (!vp) {
-            showError('Error', 'No VP created');
-            loadingVP.value = false;
-            return;
+            throw new Error('Failed to create VP');
         }
-        showSuccess('VP created');
-        loadingVP.value = false;
+        return 'VP created';
     } catch (err: any) {
-        showError('Error creating VP', err.message);
-        console.error(err);
-        loadingVP.value = false;
+        throw new Error(err.message);
     }
 }
 </script>

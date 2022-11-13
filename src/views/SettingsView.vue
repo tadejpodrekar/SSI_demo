@@ -1,9 +1,18 @@
 <template>
     <div class="settings">
-        <h1>This is a settings page</h1>
-        <Button label="Toggle popups" @click="togglePopups()" />
-        <Button label="Get DID methods" @click="getDIDMethods()" />
-        <Button label="Get VC stores" @click="getVCStores()" />
+        <div class="grid">
+            <h1>This is a settings page</h1>
+        </div>
+        <div class="grid">
+
+        </div>
+        <div class="field">
+            <label for="togglePopups">Toggle showing metamask popups</label>
+            <Button id="togglePopups" label="Toggle popups" @click="togglePopups()" />
+        </div>
+
+        <Button id="getDIDMethods" label="Get DID methods" @click="funcWrapper(toast, getDIDMethods, loadingDIDMethods)" :loading="loadingDIDMethods.value" />
+        <Button id="getVCStores" label="Get VC stores" @click="getVCStores()" :visible="false"/>
         <Dropdown v-model="mmStore.selectedDID" :options="mmStore.availableDIDs" optionLabel="text" />
         <div class="infuraInput">
             <InputText id="infuraToken" type="text" placeholder="Input infura token" />
@@ -14,14 +23,22 @@
 </template>
 
 <script setup lang="ts">
+import { reactive } from 'vue';
+import { useGeneralStore } from '@/stores/general';
 import { useMetamaskStore } from '@/stores/metamask';
+import { funcWrapper } from '@/util/general';
+import type { ToastServiceMethods } from 'primevue/toastservice';
 import type InputText from 'primevue/inputtext';
+
+const loadingDIDMethods = reactive({value: false});
 
 const mmStore = useMetamaskStore();
 mmStore.$subscribe((mutation, state) => {
     console.log('🚀 ~ file: SettingsView.vue ~ line 23 ~ mmStore.$subscribe ~ state', state);
     console.log('🚀 ~ file: SettingsView.vue ~ line 23 ~ mmStore.$subscribe ~ mutation', mutation);
 });
+const generalStore = useGeneralStore();
+const toast = generalStore.toast as ToastServiceMethods;
 
 async function togglePopups() {
     const res = await mmStore.snapApi?.togglePopups();
@@ -29,9 +46,13 @@ async function togglePopups() {
 };
 
 async function getDIDMethods() {
-    const methods = await mmStore.snapApi?.getAvailableMethods();
-    if (methods) {
-        console.log(methods);
+    try {
+        const methods = await mmStore.snapApi?.getAvailableMethods();
+        if (methods) {
+            console.log(methods);
+        }
+    } catch (error: any) {
+        throw new Error(error.message);
     }
 };
 
@@ -60,7 +81,11 @@ function log(value: any) {
 }
 </script>
 
-<style>
+<style scoped>
+.field * {
+    display: block;
+}
+
 /*
 @media (min-width: 1024px) {
     .settings {

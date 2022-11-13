@@ -7,9 +7,11 @@ import App from "./App.vue";
 import router from "./router";
 
 //import "./assets/main.css";
-import "primevue/resources/themes/bootstrap4-dark-purple/theme.css";
+import "./assets/default.css";
+import 'primevue/resources/themes/bootstrap4-dark-purple/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
 
 const app = createApp(App);
 

@@ -1,44 +1,33 @@
 <template>
   <header>
-    <img
-      alt="SSI logo"
-      class="logo"
-      src="https://blockchain-lab-um.github.io/ssi-snap-docs/img/ssi_snap_logo_2.svg"
-      width="60"
-      height="60"
-    />
-
-    <div class="wrapper">
-      <greetingTitle msg="SSI Snap Demo" />
-      <navBar />
-      <!-- Old nav
-      <nav class="nav">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink v-if="mmStore.snapInstalled" to="/settings"
-          >Settings</RouterLink
-        >
-        <RouterLink v-if="mmStore.snapInstalled" to="/profile"
-          >Profile</RouterLink
-        >
-      </nav>
-      -->
-      <div class="mmButtonWrapper">
-        <mmButton></mmButton>
+    <div class="grid">
+      <div class="col-fixed" style="width:100px">
+        <img alt="SSI logo" class="logo" src="https://blockchain-lab-um.github.io/ssi-snap-docs/img/ssi_snap_logo_2.svg"
+          width="100" height="100" />
       </div>
+      <div class="col-*">
+        <greetingTitle msg="SSI Snap Demo" />
+      </div>
+    </div>
+    <div class="wrapper">
+      <navBar />
+      <mmButton></mmButton>
     </div>
   </header>
   <RouterView />
+  <Toast position="bottom-right" group="br" />
 </template>
 
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import { useMetamaskStore } from "./stores/metamask";
+import { RouterView } from "vue-router";
+import { useGeneralStore } from "@/stores/general";
 import greetingTitle from "./components/greetingTitle.vue";
 import navBar from "./components/navBar.vue";
 import mmButton from "./components/mmButton.vue";
+import { useToast } from 'primevue/usetoast';
 
-const mmStore = useMetamaskStore();
+const generalStore = useGeneralStore();
+generalStore.toast = useToast();
 </script>
 
 <style scoped>
@@ -49,71 +38,4 @@ const mmStore = useMetamaskStore();
 html {
   padding: 0rem 1rem 0rem 1rem;
 }
-/* header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-.mmButtonWrapper {
-  text-align: center;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-} */
 </style>
