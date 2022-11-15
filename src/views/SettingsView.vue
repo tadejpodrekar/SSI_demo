@@ -8,21 +8,23 @@
         </div>
         <div class="field">
             <label for="togglePopups">Toggle showing metamask popups</label>
-            <Button id="togglePopups" label="Toggle popups" @click="togglePopups()" />
+            <wrappedButton id="togglePopups" label="Toggle popups" :method="togglePopups" />
         </div>
 
-        <Button id="getDIDMethods" label="Get DID methods" @click="funcWrapper(toast, getDIDMethods, loadingDIDMethods)" :loading="loadingDIDMethods.value" />
-        <Button id="getVCStores" label="Get VC stores" @click="getVCStores()" :visible="false"/>
+        <Button id="getDIDMethods" label="Get DID methods" @click="funcWrapper(toast, getDIDMethods, loadingDIDMethods)"
+            :loading="loadingDIDMethods.value" />
+        <Button id="getVCStores" label="Get VC stores" @click="getVCStores()" :visible="false" />
         <Dropdown v-model="mmStore.selectedDID" :options="mmStore.availableDIDs" optionLabel="text" />
         <div class="infuraInput">
             <InputText id="infuraToken" type="text" placeholder="Input infura token" />
-            <Button label="Change infura token" @click="changeInfuraToken()" />
+            <wrappedButton label="Change infura token" :method="changeInfuraToken" />
         </div>
         <div>Selected: {{ mmStore.selectedDID }}</div>
     </div>
 </template>
 
 <script setup lang="ts">
+import wrappedButton from '@/components/wrappedButton.vue';
 import { reactive } from 'vue';
 import { useGeneralStore } from '@/stores/general';
 import { useMetamaskStore } from '@/stores/metamask';
@@ -30,19 +32,25 @@ import { funcWrapper } from '@/util/general';
 import type { ToastServiceMethods } from 'primevue/toastservice';
 import type InputText from 'primevue/inputtext';
 
-const loadingDIDMethods = reactive({value: false});
+const loadingDIDMethods = reactive({ value: false });
 
 const mmStore = useMetamaskStore();
 mmStore.$subscribe((mutation, state) => {
     console.log('🚀 ~ file: SettingsView.vue ~ line 23 ~ mmStore.$subscribe ~ state', state);
-    console.log('🚀 ~ file: SettingsView.vue ~ line 23 ~ mmStore.$subscribe ~ mutation', mutation);
+    console.log('🚀 ~ file: SettingsView.vue ~ line 23 ~ mmStore.$subscribe ~ mutation', mutation?.events?.newValue?.value);
+    changeDIDMethod(mutation?.events?.newValue?.value);
 });
 const generalStore = useGeneralStore();
 const toast = generalStore.toast as ToastServiceMethods;
 
 async function togglePopups() {
-    const res = await mmStore.snapApi?.togglePopups();
-    if (res) console.log('Success toggling popups.');
+    try {
+        const res = await mmStore.snapApi?.togglePopups();
+        if (!res) throw new Error('Failed to toggle popups');
+        return 'Success toggling popups.';
+    } catch (error) {
+        throw error;
+    }
 };
 
 async function getDIDMethods() {
@@ -56,22 +64,39 @@ async function getDIDMethods() {
     }
 };
 
+const changeDIDMethod = async (method: string) => {
+    try {
+        const res = await mmStore.snapApi?.switchMethod(method);
+        if (res) {
+            console.log('Success changing DID method.');
+        }
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+};
+
 async function getVCStores() {
     const vcStores = await mmStore.snapApi?.getAvailableVCStores();
     if (vcStores) console.log('🚀 ~ file: SettingsView.vue ~ line 45 ~ getVCStores ~ vcStores', vcStores);
 };
 
 async function changeInfuraToken() {
-    const infuraToken = (<HTMLInputElement>document.getElementById('infuraToken'))?.value;
-    console.log('🚀 ~ file: SettingsView.vue ~ line 49 ~ changeInfuraToken ~ infuraToken', infuraToken);
-    if (!infuraToken) {
-        console.error('No infura token input.');
-        return;
-    };
-    const res = await mmStore.snapApi?.changeInfuraToken(infuraToken);
-    if (res) {
-        console.log('Success changing infura token');
+    try {
+        const infuraInput = document.getElementById('infuraToken');
+        infuraInput?.classList.remove('p-invalid');
+        const infuraToken = (infuraInput as HTMLInputElement)?.value;
+        console.log('🚀 ~ file: SettingsView.vue ~ line 49 ~ changeInfuraToken ~ infuraToken', infuraToken);
+        if (!infuraToken) {
+            infuraInput?.classList.add('p-invalid');
+            return;
+        }
+        const res = await mmStore.snapApi?.changeInfuraToken(infuraToken);
+        if (!res) throw new Error('Failed to change infura token.');
         (<HTMLInputElement>document.getElementById('infuraToken')).value = '';
+        return 'Success changing infura token';
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
 };
 

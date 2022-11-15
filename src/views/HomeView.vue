@@ -3,26 +3,33 @@
         <h1 id="title" v-if="!mmStore.snapInstalled">Please connect to metamask</h1>
         <div v-if="mmStore.snapInstalled" id="vcForm">
             <InputText id="nameInput" type="username" class="p-inputtext-sm" placeholder="Username" />
-            <Button :loading="loadingVC.value" @click="funcWrapper(toast, VCCreate, loadingVC)" label="Create VC" class="p-button-sm" />
-            <Button :loading="loadingVP.value" @click="funcWrapper(toast, VPCreate, loadingVP)" label="Create VP" class="p-button-sm" />
+            <!--<Button :loading="loadingVC.value" @click="funcWrapper(toast, VCCreate, loadingVC)" label="Create VC" class="p-button-sm" />
+            <Button :loading="loadingVP.value" @click="funcWrapper(toast, VPCreate, loadingVP)" label="Create VP" class="p-button-sm" />-->
+            <WrappedButton label='Create VC' :method="VCCreate" class="p-button-sm" />
+            <WrappedButton label='Create VP' :method="VPCreate" class="p-button-sm" />
         </div>
+        <WrappedButton :method="testFunc" label='Test' :condition="mmStore.snapInstalled" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
 import { useGeneralStore } from '@/stores/general';
 import { useMetamaskStore } from '@/stores/metamask';
 import { createVC, createVP, checkForVCs } from '@/util/snap';
-import { funcWrapper } from '@/util/general';
-import type { ToastServiceMethods } from 'primevue/toastservice';
+import WrappedButton from '@/components/wrappedButton.vue';
 
 const mmStore = useMetamaskStore();
-const generalStore = useGeneralStore();
 
-const toast = generalStore.toast as ToastServiceMethods;
-const loadingVC = reactive({value: false});
-const loadingVP = reactive({value: false});
+const testFunc = async () => {
+    try {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        throw new Error('Test error');
+        return 'success';
+    } catch (error) {
+        console.error;
+        throw error;
+    }
+}
 
 const VCCreate = async () => {
     try {

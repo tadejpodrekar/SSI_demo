@@ -1,11 +1,11 @@
 import type { ToastServiceMethods } from 'primevue/toastservice';
 
-export const showError = (toast: ToastServiceMethods, message: string = 'Error Message', detail: string = 'Message Content') => {
-    toast.add({ severity: 'error', summary: message, detail: detail, group: 'br', life: 3000 });
+export const showError = (toast: ToastServiceMethods, message: string = 'Message Content') => {
+    toast.add({ severity: 'error', summary: 'Error', detail: message, group: 'br', life: 3000 });
 }
 
-export const showSuccess = (toast: ToastServiceMethods, title: string = 'Success', message: string = 'Message Content') => {
-    toast.add({ severity: 'success', summary: title, detail: message, group: 'br', life: 3000 });
+export const showSuccess = (toast: ToastServiceMethods, message: string = 'Message Content') => {
+    toast.add({ severity: 'success', summary: 'Success', detail: message, group: 'br', life: 3000 });
 }
 
 /**
@@ -22,7 +22,7 @@ export const funcWrapper = async (toast: ToastServiceMethods, func: Function, lo
         const successMsg = await func();
         if (typeof successMsg === 'string') showSuccess(toast, successMsg);
     } catch (err: any) {
-        showError(toast, 'Error', err.message);
+        showError(toast, err.message);
     }
     loading.value = false;
 }
