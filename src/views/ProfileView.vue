@@ -1,42 +1,58 @@
 <template>
   <div class="profile">
     <h1>Available VCs</h1>
-    <Button label="Log vcs" @click="logVCs()" />
+    <wrappedButton :label="'Log vcs'" :method="logVCs" />
+    <Textarea v-model="VCImport" rows="5" cols="30" />
+    <wrappedButton label="Import VC" :method="importVC" />
   </div>
 </template>
 
 <script setup lang="ts">
+import wrappedButton from "@/components/wrappedButton.vue";
+import { ref } from "vue";
 import { useMetamaskStore } from "@/stores/metamask";
-import { checkForVCs } from "@/util/snap";
+import { checkForVCs, saveVC } from "@/util/snap";
+import type { VerifiableCredential } from "../util/interfaces";
 
 const mmStore = useMetamaskStore();
+const VCImport = ref('');
 
-async function logVCs() {
-  const validVCs = await checkForVCs(
-    mmStore.snapApi,
-    mmStore.mmAddress
-  );
-  console.log(
-    "🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs",
-    validVCs
-  );
-  if (validVCs) {
-    mmStore.vcs = validVCs;
+const logVCs = async () => {
+  try {
+    const validVCs = await checkForVCs(
+      mmStore.snapApi,
+      mmStore.mmAddress
+    );
+    console.log("🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs", validVCs);
+    if (validVCs) {
+      mmStore.vcs = validVCs;
+    }
+    return 'Success getting VCs';
+  } catch (err: any) {
+    console.error(err);
+    throw err;
   }
-  console.log(mmStore.vcs?.values);
+}
+
+const importVC = async () => {
+  let VC: VerifiableCredential;
+  try {
+    VC = JSON.parse(VCImport.value) as VerifiableCredential;
+  } catch (err: any) {
+    throw err;
+  }
+  console.log('🚀 ~ file: ProfileView.vue ~ line 54 ~ importVC ~ VC', VC);
+  try {
+    const res = saveVC(VC, mmStore.snapApi);
+    if (!res) throw new Error('Failed to save VC');
+    console.log('🚀 ~ file: ProfileView.vue ~ line 48 ~ importVC ~ res', res);
+    return 'Success importing VC';
+  } catch (err: any) {
+    console.error(err);
+    throw err;
+  }
 }
 </script>
 
 <style>
-/*
-@media (min-width: 1024px) {
-  .profile {
-    display: grid;
-    min-height: 100vh;
-    align-items: center;
-    margin-top: 1rem;
-    justify-items: center;
-    align-content: center;
-  }
-} */
 </style>

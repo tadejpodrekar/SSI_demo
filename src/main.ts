@@ -22,6 +22,7 @@ app.use(router);
 app
     .component("Button", primeVueComponents.Button)
     .component("InputText", primeVueComponents.InputText)
+    .component("Textarea", primeVueComponents.Textarea)
     .component("Toast", primeVueComponents.Toast)
     .component("Dropdown", primeVueComponents.Dropdown);
 
