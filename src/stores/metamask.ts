@@ -19,12 +19,16 @@ export const useMetamaskStore = defineStore("metamask", () => {
   const snapInstalled = computed(() => {
     return mmAddress.value && snapApi.value ? true : false;
   });
+  const mmAddressString = computed(() => {
+    return mmAddress.value ? (mmAddress.value.substring(0, 6) + "..." + mmAddress.value.substring(mmAddress.value.length-4)) : "No address";
+  });
 
   // Mutations - write as function export
 
   return {
     snapInstalled,
     mmAddress,
+    mmAddressString,
     snapApi,
     selectedDID,
     availableDIDs,

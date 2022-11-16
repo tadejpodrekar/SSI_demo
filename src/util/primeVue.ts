@@ -5,6 +5,7 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Dropdown from 'primevue/dropdown';
 import Toast from 'primevue/toast';
+import Chip from 'primevue/chip';
 
 export const primeVueComponents = {
     PrimeVue,
@@ -13,5 +14,6 @@ export const primeVueComponents = {
     InputText,
     Textarea,
     Dropdown,
-    Toast
+    Toast,
+    Chip
 };

@@ -1,17 +1,20 @@
 <template>
   <header>
     <div class="grid">
-      <div class="col-fixed" style="width:100px">
+      <!--<div class="col-fixed" style="width:100px">
         <img alt="SSI logo" class="logo" src="https://blockchain-lab-um.github.io/ssi-snap-docs/img/ssi_snap_logo_2.svg"
           width="100" height="100" />
-      </div>
-      <div class="col-*">
+      </div>-->
+      <div class="col-6">
         <greetingTitle msg="SSI Snap Demo" />
+      </div>
+      <div class="col-3" />
+      <div class="col-3 mmCenter" >
+        <mmButton />
       </div>
     </div>
     <div class="wrapper">
       <navBar />
-      <mmButton></mmButton>
     </div>
   </header>
   <RouterView />
@@ -37,5 +40,11 @@ generalStore.toast = useToast();
 
 html {
   padding: 0rem 1rem 0rem 1rem;
+}
+
+.mmCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

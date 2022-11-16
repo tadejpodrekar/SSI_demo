@@ -8,7 +8,7 @@ import router from "./router";
 
 //import "./assets/main.css";
 import "./assets/default.css";
-import 'primevue/resources/themes/bootstrap4-dark-purple/theme.css';
+import 'primevue/resources/themes/tailwind-light/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
@@ -24,7 +24,8 @@ app
     .component("InputText", primeVueComponents.InputText)
     .component("Textarea", primeVueComponents.Textarea)
     .component("Toast", primeVueComponents.Toast)
-    .component("Dropdown", primeVueComponents.Dropdown);
+    .component("Dropdown", primeVueComponents.Dropdown)
+    .component("Chip", primeVueComponents.Chip);
 
 app.use(primeVueComponents.ToastService);
 

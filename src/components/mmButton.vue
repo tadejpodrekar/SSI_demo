@@ -1,7 +1,7 @@
 <template>
   <Button label="Import metamask" :loading="isLoading" v-if="!mmStore.snapInstalled" @click="connectToMM()" />
   <div v-if="mmStore.snapInstalled">
-    {{ mmStore.mmAddress?.substring(0, 10) + "..." }}
+    <Chip :label="'Metamask connected\nAddress: ' + mmStore.mmAddressString" icon="pi pi-check" class="p-mr-2" />
   </div>
 </template>
 
@@ -54,4 +54,7 @@ async function connectToMM() {
 </script>
 
 <style>
+.p-chip {
+  white-space: pre-line;
+}
 </style>
