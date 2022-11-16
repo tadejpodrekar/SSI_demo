@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div class="grid">
+    <div class="grid nav">
       <!--<div class="col-fixed" style="width:100px">
         <img alt="SSI logo" class="logo" src="https://blockchain-lab-um.github.io/ssi-snap-docs/img/ssi_snap_logo_2.svg"
           width="100" height="100" />
@@ -8,8 +8,7 @@
       <div class="col-6">
         <greetingTitle msg="SSI Snap Demo" />
       </div>
-      <div class="col-3" />
-      <div class="col-3 mmCenter" >
+      <div class="col-* mmCenter" >
         <mmButton />
       </div>
     </div>
@@ -34,15 +33,20 @@ generalStore.toast = useToast();
 </script>
 
 <style scoped>
-.nav a {
-  margin: 0.5rem;
-}
-
 html {
   padding: 0rem 1rem 0rem 1rem;
 }
 
+.nav {
+  justify-content: space-between;
+}
+
+.grid {
+  margin: -0.5rem 0rem;
+}
+
 .mmCenter {
+  margin-right: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;

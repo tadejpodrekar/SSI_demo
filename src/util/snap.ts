@@ -27,13 +27,13 @@ export async function installSnap(snapId?: string, supportedMethods?: ("did:ethr
         const metamaskSSISnap = await enableSSISnap(snapInstallationParams);
 
         console.log("Snap installed!");
-        return <SnapInitializationResponse>{
+        return {
             isSnapInstalled: true,
             snap: metamaskSSISnap,
-        };
+        } as SnapInitializationResponse;
     } catch (e) {
         console.error(e);
-        return <SnapInitializationResponse>{ isSnapInstalled: false };
+        return { isSnapInstalled: false } as SnapInitializationResponse;
     }
 }
 
@@ -41,28 +41,29 @@ export async function checkForVCs(snapApi?: SSISnapApi, mmAddress?: string) {
     try {
         if (!snapApi) throw new Error("No snap API found.");
         const vcs = await snapApi.getVCs();
+        console.log('🚀 ~ file: snap.ts ~ line 44 ~ checkForVCs ~ vcs', vcs);
         if (!vcs.length) {
             console.log("No VCs found.");
             return undefined;
         }
-        if (mmAddress) {
-            vcs.map((vc: any) => {
-                console.log(
-                    vc.credentialSubject.id.split(":")[3].toString().toUpperCase(),
-                    mmAddress,
-                    vcIssuerId.toUpperCase(),
-                    vc.issuer.id.toString().toUpperCase()
-                );
-                if (
-                    vc.credentialSubject.id.split(":")[3].toString().toUpperCase() ===
-                    mmAddress.toUpperCase() &&
-                    vc.issuer.id.toString().toUpperCase() === vcIssuerId.toUpperCase()
-                ) {
-                    console.log("Valid VC found!");
-                }
-            });
-        }
-        return <VerifiableCredential[]>vcs;
+        // if (mmAddress) {
+        //     vcs.map((vc: any) => {
+        //         console.log(
+        //             vc.credentialSubject.id.split(":")[3].toString().toUpperCase(),
+        //             mmAddress,
+        //             vcIssuerId.toUpperCase(),
+        //             vc.issuer.id.toString().toUpperCase()
+        //         );
+        //         if (
+        //             vc.credentialSubject.id.split(":")[3].toString().toUpperCase() ===
+        //             mmAddress.toUpperCase() &&
+        //             vc.issuer.id.toString().toUpperCase() === vcIssuerId.toUpperCase()
+        //         ) {
+        //             console.log("Valid VC found!");
+        //         }
+        //     });
+        // }
+        return vcs as VerifiableCredential[];
     } catch (err: any) {
         console.error(err.message);
         return undefined;
@@ -146,20 +147,38 @@ export async function createVP(VC: VerifiableCredential, snapApi?: SSISnapApi) {
     }
 }
 
+export async function testDIDMethods(snapApi?: SSISnapApi) {
+    try {
+        if (!snapApi) throw new Error("No snap API found.");
+        const [did, availableMethods] = await Promise.all([snapApi.getDID(), snapApi.getAvailableMethods()])
+        console.log(did);
+        console.log(availableMethods);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 export async function initStore(snapApi: SSISnapApi) {
-    let selectedDID, availableDIDs;
-    const method = await snapApi?.getMethod();
-    if (method) {
-        selectedDID = <DIDMethod>{ value: method, text: method.split(":")[1] };
-    }
+    try {
+        const [did, methods] = await Promise.all([snapApi.getDID(), snapApi.getAvailableMethods()])
+        console.log('🚀 ~ file: snap.ts ~ line 158 ~ initStore ~ methods', methods);
+        console.log('🚀 ~ file: snap.ts ~ line 158 ~ initStore ~ did', did);
 
-    const methods = await snapApi?.getAvailableMethods();
-    if (methods) {
-        console.log(methods);
-        availableDIDs = methods.map((method) => {
-            return <DIDMethod>{ value: method, text: method.split(":")[1] };
-        });
+        let currDIDMethod, availableMethods;
+        if (did) {
+            const splitDID = did.split(":");
+            const didName = splitDID[1];
+            currDIDMethod = { value: splitDID[0] + ':' + splitDID[1], text: didName.charAt(0).toUpperCase() + didName.slice(1) };
+        }
+        if (methods) {
+            availableMethods = methods.map((method) => {
+                let methodName = method.split(":")[1]
+                return { value: method, text: methodName.charAt(0).toUpperCase() + methodName.slice(1) } as DIDMethod;
+            });
+        }
+        return { did, currDIDMethod, availableMethods } as DIDInfo;
+    } catch (error) {
+        console.error(error);
+        return undefined;
     }
-
-    return <DIDInfo>{ selectedDID, availableDIDs };
 }

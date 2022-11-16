@@ -1,7 +1,7 @@
 <template>
   <Button label="Import metamask" :loading="isLoading" v-if="!mmStore.snapInstalled" @click="connectToMM()" />
   <div v-if="mmStore.snapInstalled">
-    <Chip :label="'Metamask connected\nAddress: ' + mmStore.mmAddressString" icon="pi pi-check" class="p-mr-2" />
+    <Chip :label="'Metamask connected\n' + mmStore.mmAddressString" icon="pi pi-check" class="p-mr-2" />
   </div>
 </template>
 
@@ -39,8 +39,9 @@ async function connectToMM() {
         mmStore.snapApi = api;
         const DIDData = await initStore(api);
         if (DIDData) {
-          mmStore.selectedDID = DIDData.selectedDID;
-          mmStore.availableDIDs = DIDData.availableDIDs;
+          mmStore.DID = DIDData.did;
+          mmStore.currDIDMethod = DIDData.currDIDMethod;
+          mmStore.availableMethods = DIDData.availableMethods;
         }
 
         router.push("/");

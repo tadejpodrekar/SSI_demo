@@ -23,7 +23,7 @@ const logVCs = async () => {
       mmStore.snapApi,
       mmStore.mmAddress
     );
-    console.log("🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs", validVCs);
+    console.log("🚀 ~ file: ProfileView.vue ~ line 36 ~ logVCs ~ validVCs", validVCs);
     if (validVCs) {
       mmStore.vcs = validVCs;
     }

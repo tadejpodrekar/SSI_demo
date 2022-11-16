@@ -7,8 +7,9 @@ export const useMetamaskStore = defineStore("metamask", () => {
   // Store values
   const mmAddress = ref<string | undefined>(undefined);
   const snapApi = ref<SSISnapApi | undefined>(undefined);
-  const selectedDID = ref<DIDMethod | undefined>(undefined);
-  const availableDIDs = ref<DIDMethod[] | undefined>(undefined);
+  const DID = ref<string | undefined>(undefined);
+  const currDIDMethod = ref<DIDMethod | undefined>(undefined);
+  const availableMethods = ref<DIDMethod[] | undefined>(undefined);
   const verifiableCredential = ref<VerifiableCredential | undefined>(undefined);
   const vcs = ref<VerifiableCredential[] | undefined>(undefined);
 
@@ -16,11 +17,18 @@ export const useMetamaskStore = defineStore("metamask", () => {
   const vcIssuerId = computed(() => {
     return "did:ethr:rinkeby:0x0241abd662da06d0af2f0152a80bc037f65a7f901160cfe1eb35ef3f0c532a2a4d";
   });
+
   const snapInstalled = computed(() => {
     return mmAddress.value && snapApi.value ? true : false;
   });
+
   const mmAddressString = computed(() => {
-    return mmAddress.value ? (mmAddress.value.substring(0, 6) + "..." + mmAddress.value.substring(mmAddress.value.length-4)) : "No address";
+    return DID.value ? 
+      (DID.value.substring(0, 20) + "..." + DID.value.substring(DID.value.length-4)) : "No DID";
+  });
+
+  const didMethodsString = computed(() => {
+    return DID.value ? (DID.value.split(':')[0] + ':' + DID.value.split(':')[1]) : undefined;
   });
 
   // Mutations - write as function export
@@ -30,8 +38,10 @@ export const useMetamaskStore = defineStore("metamask", () => {
     mmAddress,
     mmAddressString,
     snapApi,
-    selectedDID,
-    availableDIDs,
+    DID,
+    didMethodsString,
+    currDIDMethod,
+    availableMethods,
     verifiableCredential,
     vcs,
     vcIssuerId,

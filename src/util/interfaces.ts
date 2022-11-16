@@ -43,6 +43,7 @@ export interface DIDMethod {
 }
 
 export interface DIDInfo {
-  selectedDID: DIDMethod | undefined;
-  availableDIDs: DIDMethod[] | undefined;
+  did: string;
+  currDIDMethod: DIDMethod | undefined;
+  availableMethods: DIDMethod[] | undefined;
 }

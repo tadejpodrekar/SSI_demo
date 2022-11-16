@@ -8,14 +8,14 @@
             <WrappedButton label='Create VC' :method="VCCreate" class="p-button-sm" />
             <WrappedButton label='Create VP' :method="VPCreate" class="p-button-sm" />
         </div>
-        <WrappedButton :method="testFunc" label='Test' :condition="mmStore.snapInstalled" />
+        <button @click="testDIDMethods(mmStore.snapApi)">Test</button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { useGeneralStore } from '@/stores/general';
 import { useMetamaskStore } from '@/stores/metamask';
-import { createVC, createVP, checkForVCs } from '@/util/snap';
+import { createVC, createVP, checkForVCs, testDIDMethods } from '@/util/snap';
 import WrappedButton from '@/components/wrappedButton.vue';
 
 const mmStore = useMetamaskStore();
