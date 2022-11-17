@@ -1,6 +1,6 @@
 <template>
     <div class="settings">
-        <h1>This is a settings page</h1>
+        <h1 id="title">This is a settings page</h1>
 
         <wrappedButton id="togglePopups" label="Toggle popups" :method="togglePopups" />
         <Button id="getDIDMethods" label="Get DID methods" @click="funcWrapper(toast, getDIDMethods, loadingDIDMethods)"
@@ -123,7 +123,7 @@ function log(value: any) {
     border: 1px solid red;
 }
 
-h1 {
+.title {
     text-align: center;
 }
 </style>

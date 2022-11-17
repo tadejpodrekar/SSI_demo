@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <h1>Available VCs</h1>
+    <h1 id="title">Available VCs</h1>
     <wrappedButton :label="'Log vcs'" :method="logVCs" />
     <Textarea v-model="VCImport" rows="5" cols="30" />
     <wrappedButton label="Import VC" :method="importVC" />
@@ -55,7 +55,7 @@ const importVC = async () => {
 </script>
 
 <style>
-h1 {
+.title {
   text-align: center;
 }
 

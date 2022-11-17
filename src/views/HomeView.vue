@@ -72,7 +72,7 @@ const VPCreate = async () => {
 
 <style>
 /* center the h1 content */
-h1 {
+.title {
   text-align: center;
 }
 
