@@ -2,7 +2,7 @@
   <div class="profile">
     <h1 id="title">Available VCs</h1>
     <div>
-      <DataTable :value="mmStore.vcs" responsiveLayout="scroll" removableSort>
+      <DataTable :value="mmStore.vcs" responsiveLayout="scroll" removableSort v-model:selection="selectedVC" selectionMode="single" dataKey="id">
         <template #header>
           <div class="table-header">
             Verifiable Credentials
@@ -10,6 +10,7 @@
               <Button @click="openModal" label="Import VC" icon="pi pi-file-import" />
               <!--<wrappedButton label="Import VC" :method="importVC" icon="pi pi-file-import" />-->
               <wrappedButton label="Load VCs" :method="logVCs" icon="pi pi-refresh" />
+              <wrappedButton label="Create VP" :method="vpCreate" icon="pi pi-upload" />
             </div>
 
           </div>
@@ -46,12 +47,13 @@ import wrappedButton from "@/components/wrappedButton.vue";
 import { ref } from "vue";
 import { useMetamaskStore } from "@/stores/metamask";
 import { ISOtoLocaleString } from "@/util/general";
-import { checkForVCs, saveVC } from "@/util/snap";
+import { checkForVCs, saveVC, createVP } from "@/util/snap";
 import type { VerifiableCredential } from "../util/interfaces";
 
 const mmStore = useMetamaskStore();
 const VCImport = ref('');
 const displayModal = ref(false);
+const selectedVC = ref<VerifiableCredential | undefined>(undefined);
 
 const openModal = () => {
   displayModal.value = true;
@@ -76,6 +78,22 @@ const logVCs = async () => {
   } catch (err: any) {
     console.error(err);
     throw err;
+  }
+}
+
+const vpCreate = async () => {
+  try {
+    if(!selectedVC.value) {
+      throw new Error('No VC selected');
+    }
+    const vp = await createVP(selectedVC.value, mmStore.snapApi);
+    console.log('🚀 ~ file: HomeView.vue ~ line 32 ~ VPCreate ~ res', vp);
+    if (!vp) {
+      throw new Error('Failed to create VP');
+    }
+    return 'VP created';
+  } catch (err: any) {
+    throw new Error(err.message);
   }
 }
 
