@@ -25,8 +25,8 @@ const VCCreate = async () => {
       return;
     }
 
-    const vcs = await createVC(nameInputValue, mmStore.mmAddress, mmStore.snapApi);
-    if (!vcs) {
+    const res = await createVC(nameInputValue, mmStore.mmAddress, mmStore.snapApi);
+    if (!res) {
       throw new Error('Failed to create VC');
     }
     return 'VC created';

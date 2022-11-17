@@ -1,7 +1,9 @@
 <template>
   <Button label="Import metamask" :loading="isLoading" v-if="!mmStore.snapInstalled" @click="connectToMM()" />
-  <div v-if="mmStore.snapInstalled">
-    <Chip :label="'Metamask connected\n' + mmStore.mmAddressString" icon="pi pi-check" class="p-mr-2" />
+  <div v-if="mmStore.snapInstalled" style="display: flex; flex-direction: column;">
+    <Chip :label="mmStore.didString" icon="pi pi-check" class="p-mr-2" @click="copyToClipboard('did')" />
+    <Chip :label="mmStore.mmAddressString" icon="pi pi-check" class="p-mr-2" @click="copyToClipboard('mmAddr')"
+      v-tooltip.bottom.focus="'Enter your username'" />
   </div>
 </template>
 
@@ -10,10 +12,25 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { installSnap, initStore } from "../util/snap";
 import { useMetamaskStore } from "@/stores/metamask";
+import { useGeneralStore } from "@/stores/general";
+import type { ToastServiceMethods } from 'primevue/toastservice';
 
+const generalStore = useGeneralStore();
 const mmStore = useMetamaskStore();
 const router = useRouter();
 const isLoading = ref(false);
+
+const toast = generalStore.toast as ToastServiceMethods;
+
+const copyToClipboard = (type: string) => {
+  if (type === 'did') {
+    navigator.clipboard.writeText(mmStore.DID ?? '');
+    toast.add({ severity: 'info', summary: 'Info', detail: 'Copied DID to clipboard.', group: 'br', life: 3000 });
+  } else if (type === 'mmAddr') {
+    navigator.clipboard.writeText(mmStore.mmAddress ?? '');
+    toast.add({ severity: 'info', summary: 'Info', detail: 'Copied address to clipboard.', group: 'br', life: 3000 });
+  }
+}
 
 async function connectToMM() {
   isLoading.value = true;
@@ -57,5 +74,9 @@ async function connectToMM() {
 <style>
 .p-chip {
   white-space: pre-line;
+}
+
+.p-chip .p-chip-text {
+  cursor: pointer !important;
 }
 </style>

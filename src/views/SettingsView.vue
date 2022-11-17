@@ -2,7 +2,14 @@
     <div class="settings">
         <h1 id="title">SSI Snap Configuration</h1>
         <div class="settingsContent">
-            <div class="popups">
+            <div class="center">
+                <p>Use Ceramic VC store: </p>
+                <div>
+                    <InputSwitch v-model="mmStore.useCeramic" @input="toggleCeramic" />
+                </div>
+            </div>
+
+            <div class="center">
                 <p>Used for toggling the built-in Metamask popups: </p>
                 <wrappedButton id="togglePopups" label="Toggle popups" :method="togglePopups" />
             </div>
@@ -17,8 +24,9 @@
 
 <script setup lang="ts">
 import wrappedButton from '@/components/wrappedButton.vue';
-import { useGeneralStore } from '@/stores/general';
 import { useMetamaskStore } from '@/stores/metamask';
+import { useGeneralStore } from "@/stores/general";
+import { setVCStore } from '@/util/snap';
 import type { ToastServiceMethods } from 'primevue/toastservice';
 import type InputText from 'primevue/inputtext';
 
@@ -26,7 +34,20 @@ const mmStore = useMetamaskStore();
 const generalStore = useGeneralStore();
 const toast = generalStore.toast as ToastServiceMethods;
 
-async function togglePopups() {
+const toggleCeramic = async (val: boolean) => {
+    try {
+        let store = 'snap';
+        if (val) store = 'ceramic';
+        const res = await setVCStore(store, mmStore.snapApi);
+        toast.add({ severity: 'success', summary: 'Success', detail: res, group: 'br', life: 3000 });
+    } catch (error: any) {
+        mmStore.useCeramic = !val;
+        console.error(error);
+        toast.add({ severity: 'error', summary: 'Error', detail: error.message, group: 'br', life: 3000 });
+    }
+}
+
+const togglePopups = async () => {
     try {
         const res = await mmStore.snapApi?.togglePopups();
         if (!res) throw new Error('Failed to toggle popups');
@@ -36,7 +57,7 @@ async function togglePopups() {
     }
 };
 
-async function changeInfuraToken() {
+const changeInfuraToken = async () => {
     try {
         const infuraInput = document.getElementById('infuraToken');
         infuraInput?.classList.remove('p-invalid');
@@ -57,7 +78,7 @@ async function changeInfuraToken() {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .settings {
     margin: 0 auto;
     max-width: 1000px;
@@ -74,13 +95,9 @@ async function changeInfuraToken() {
     margin: 0.5rem 1rem;
 }
 
-.popups {
+.center {
     display: flex;
     align-items: center;
-}
-
-#title {
-    text-align: center;
 }
 </style>
   
