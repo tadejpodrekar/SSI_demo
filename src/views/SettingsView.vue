@@ -1,20 +1,13 @@
 <template>
     <div class="settings">
-        <div class="grid">
-            <h1>This is a settings page</h1>
-        </div>
-        <div class="grid">
+        <h1>This is a settings page</h1>
 
-        </div>
-        <div class="field">
-            <label for="togglePopups">Toggle showing metamask popups</label>
-            <wrappedButton id="togglePopups" label="Toggle popups" :method="togglePopups" />
-        </div>
-
+        <wrappedButton id="togglePopups" label="Toggle popups" :method="togglePopups" />
         <Button id="getDIDMethods" label="Get DID methods" @click="funcWrapper(toast, getDIDMethods, loadingDIDMethods)"
             :loading="loadingDIDMethods.value" />
         <Button id="getVCStores" label="Get VC stores" @click="getVCStores()" :visible="false" />
-        <Dropdown v-model="mmStore.currDIDMethod" :options="mmStore.availableMethods" @change="changeDIDMethod(undefined, $event)" optionLabel="text" />
+        <Dropdown v-model="mmStore.currDIDMethod" :options="mmStore.availableMethods"
+            @change="changeDIDMethod(undefined, $event)" optionLabel="text" />
         <div class="infuraInput">
             <InputText id="infuraToken" type="text" placeholder="Input infura token" />
             <wrappedButton label="Change infura token" :method="changeInfuraToken" />
@@ -75,13 +68,13 @@ const testDIDChange = async (method: string, event?: any) => {
 
 const changeDIDMethod = async (method?: string, event?: any) => {
     try {
-        if(event.value.value === mmStore?.didMethodsString) return;
-        if(!method) method = mmStore.currDIDMethod?.value;
-        if(!method) throw new Error('No method selected');
+        if (event.value.value === mmStore?.didMethodsString) return;
+        if (!method) method = mmStore.currDIDMethod?.value;
+        if (!method) throw new Error('No method selected');
         const res = await mmStore.snapApi?.switchMethod(method);
         if (res) {
             const did = await mmStore.snapApi?.getDID();
-            if(did) mmStore.DID = did;
+            if (did) mmStore.DID = did;
             toast.add({ severity: 'success', summary: 'Success', detail: 'Success changing DID method.', group: 'br', life: 3000 });
             console.log('Success changing DID method.');
         }
@@ -123,20 +116,15 @@ function log(value: any) {
 </script>
 
 <style scoped>
-.field * {
-    display: block;
+.settings {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 0 1rem;
+    border: 1px solid red;
 }
 
-/*
-@media (min-width: 1024px) {
-    .settings {
-        display: grid;
-        min-height: 100vh;
-        align-items: center;
-        margin-top: 1rem;
-        justify-items: center;
-        align-content: center;
-    }
-} */
+h1 {
+    text-align: center;
+}
 </style>
   

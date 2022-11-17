@@ -23,12 +23,17 @@ export const useMetamaskStore = defineStore("metamask", () => {
   });
 
   const mmAddressString = computed(() => {
-    return DID.value ? 
-      (DID.value.substring(0, 20) + "..." + DID.value.substring(DID.value.length-4)) : "No DID";
+    return DID.value
+      ? DID.value.substring(0, 20) +
+          "..." +
+          DID.value.substring(DID.value.length - 4)
+      : "No DID";
   });
 
   const didMethodsString = computed(() => {
-    return DID.value ? (DID.value.split(':')[0] + ':' + DID.value.split(':')[1]) : undefined;
+    return DID.value
+      ? DID.value.split(":")[0] + ":" + DID.value.split(":")[1]
+      : undefined;
   });
 
   // Mutations - write as function export

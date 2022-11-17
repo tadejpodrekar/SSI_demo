@@ -1,12 +1,30 @@
-import type { ToastServiceMethods } from 'primevue/toastservice';
+import type { ToastServiceMethods } from "primevue/toastservice";
 
-export const showError = (toast: ToastServiceMethods, message: string = 'Message Content') => {
-    toast.add({ severity: 'error', summary: 'Error', detail: message, group: 'br', life: 3000 });
-}
+export const showError = (
+  toast: ToastServiceMethods,
+  message: string = "Message Content"
+) => {
+  toast.add({
+    severity: "error",
+    summary: "Error",
+    detail: message,
+    group: "br",
+    life: 3000,
+  });
+};
 
-export const showSuccess = (toast: ToastServiceMethods, message: string = 'Message Content') => {
-    toast.add({ severity: 'success', summary: 'Success', detail: message, group: 'br', life: 3000 });
-}
+export const showSuccess = (
+  toast: ToastServiceMethods,
+  message: string = "Message Content"
+) => {
+  toast.add({
+    severity: "success",
+    summary: "Success",
+    detail: message,
+    group: "br",
+    life: 3000,
+  });
+};
 
 /**
  * Function to show a success or error toast message based on the response from the function.
@@ -16,13 +34,17 @@ export const showSuccess = (toast: ToastServiceMethods, message: string = 'Messa
  * @param func function to execute
  * @param loading loading state
  */
-export const funcWrapper = async (toast: ToastServiceMethods, func: Function, loading: {value: Boolean}) => {
-    loading.value = true;
-    try {
-        const successMsg = await func();
-        if (typeof successMsg === 'string') showSuccess(toast, successMsg);
-    } catch (err: any) {
-        showError(toast, err.message);
-    }
-    loading.value = false;
-}
+export const funcWrapper = async (
+  toast: ToastServiceMethods,
+  func: Function,
+  loading: { value: Boolean }
+) => {
+  loading.value = true;
+  try {
+    const successMsg = await func();
+    if (typeof successMsg === "string") showSuccess(toast, successMsg);
+  } catch (err: any) {
+    showError(toast, err.message);
+  }
+  loading.value = false;
+};

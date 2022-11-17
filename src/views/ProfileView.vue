@@ -55,4 +55,14 @@ const importVC = async () => {
 </script>
 
 <style>
+h1 {
+  text-align: center;
+}
+
+.profile {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 0 1rem;
+  border: 1px solid red;
+}
 </style>

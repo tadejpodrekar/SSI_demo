@@ -1,4 +1,4 @@
-@import "./base.css";
+@import './base.css';
 
 #app {
   max-width: 1280px;
@@ -11,7 +11,7 @@
 a,
 .greeting {
   text-decoration: none;
-  color: #A495FF;
+  color: #a495ff;
   transition: 0.4s;
 }
 
