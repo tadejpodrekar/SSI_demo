@@ -1,4 +1,4 @@
-import type { MetaMaskSSISnap } from "@blockchain-lab-um/ssi-snap-connector";
+import type { MetaMaskSSISnap } from '@blockchain-lab-um/ssi-snap-connector';
 
 export interface SnapInitializationResponse {
   isSnapInstalled: boolean;
@@ -8,7 +8,7 @@ export interface SnapInitializationResponse {
 export interface SnapInstallationParams {
   snapId?: string;
   version?: string;
-  supportedMethods?: ("did:ethr" | "did:key")[] | undefined;
+  supportedMethods?: ('did:ethr' | 'did:key')[] | undefined;
 }
 
 export interface VerifiableCredential {
@@ -28,7 +28,7 @@ export interface VerifiableCredential {
     id: string;
     type: string;
   };
-  "@context": string[];
+  '@context': string[];
   issuanceDate: string;
   proof: {
     type: string;
@@ -42,8 +42,9 @@ export interface DIDMethod {
   text: string | undefined;
 }
 
-export interface DIDInfo {
+export interface storeInitResponse {
   did: string;
   currDIDMethod: DIDMethod | undefined;
   availableMethods: DIDMethod[] | undefined;
+  currVCStore: string | undefined;
 }

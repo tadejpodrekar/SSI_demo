@@ -54,11 +54,13 @@ async function connectToMM() {
         if (!api) return;
         isLoading.value = false;
         mmStore.snapApi = api;
-        const DIDData = await initStore(api);
-        if (DIDData) {
-          mmStore.DID = DIDData.did;
-          mmStore.currDIDMethod = DIDData.currDIDMethod;
-          mmStore.availableMethods = DIDData.availableMethods;
+        const initResponse = await initStore(api);
+        if (initResponse) {
+          mmStore.DID = initResponse.did;
+          mmStore.currDIDMethod = initResponse.currDIDMethod;
+          mmStore.availableMethods = initResponse.availableMethods;
+          mmStore.currVCStore = initResponse.currVCStore;
+          mmStore.useCeramic = initResponse.currVCStore === 'ceramic';
         }
 
         router.push("/");

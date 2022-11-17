@@ -36,11 +36,11 @@ const toast = generalStore.toast as ToastServiceMethods;
 
 const toggleCeramic = async (val: boolean) => {
     try {
-        let store = 'snap';
-        if (val) store = 'ceramic';
+        let store = val ? 'ceramic' : 'snap';
         const res = await setVCStore(store, mmStore.snapApi);
         toast.add({ severity: 'success', summary: 'Success', detail: res, group: 'br', life: 3000 });
     } catch (error: any) {
+        mmStore.currVCStore = val ? 'ceramic' : 'snap';
         mmStore.useCeramic = !val;
         console.error(error);
         toast.add({ severity: 'error', summary: 'Error', detail: error.message, group: 'br', life: 3000 });

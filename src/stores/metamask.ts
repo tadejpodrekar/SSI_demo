@@ -12,6 +12,7 @@ export const useMetamaskStore = defineStore('metamask', () => {
   const availableMethods = ref<DIDMethod[] | undefined>(undefined);
   const verifiableCredential = ref<VerifiableCredential | undefined>(undefined);
   const vcs = ref<VerifiableCredential[]>([] as VerifiableCredential[]);
+  const currVCStore = ref<string | undefined>(undefined);
   const useCeramic = ref<boolean>(false);
 
   // Read only values
@@ -64,5 +65,6 @@ export const useMetamaskStore = defineStore('metamask', () => {
     vcIssuerId,
     useCeramic,
     vcStores,
+    currVCStore,
   };
 });

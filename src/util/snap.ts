@@ -5,7 +5,7 @@ import type {
   SnapInstallationParams,
   VerifiableCredential,
   DIDMethod,
-  DIDInfo,
+  storeInitResponse,
   SnapInitializationResponse,
 } from './interfaces';
 
@@ -133,9 +133,10 @@ export function createDIDMethod(DID?: string) {
 
 export async function initStore(snapApi: SSISnapApi) {
   try {
-    const [did, methods] = await Promise.all([
+    const [did, methods, vcStore] = await Promise.all([
       snapApi.getDID(),
       snapApi.getAvailableMethods(),
+      snapApi.getVCStore(),
     ]);
 
     let currDIDMethod, availableMethods;
@@ -151,7 +152,12 @@ export async function initStore(snapApi: SSISnapApi) {
         } as DIDMethod;
       });
     }
-    return { did, currDIDMethod, availableMethods } as DIDInfo;
+    return {
+      did,
+      currDIDMethod,
+      availableMethods,
+      currVCStore: vcStore,
+    } as storeInitResponse;
   } catch (error) {
     console.error(error);
     return undefined;
