@@ -139,8 +139,8 @@ const importVC = async () => {
 }
 
 .profile {
-  margin: 0 auto;
-  padding: 0 10rem;
+  margin: 0 5rem;
+  
   border: 1px solid red;
 }
 </style>

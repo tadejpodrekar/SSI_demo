@@ -25,5 +25,5 @@ export const primeVueComponents = {
   Column,
   ColumnGroup,
   Row,
-  Dialog
+  Dialog,
 };

@@ -1,31 +1,26 @@
 <template>
     <div class="settings">
         <h1 id="title">SSI Snap Configuration</h1>
-        <div class="popups"></div>
-        <wrappedButton id="togglePopups" label="Toggle popups" :method="togglePopups" />
-        <Button id="getDIDMethods" label="Get DID methods" @click="funcWrapper(toast, getDIDMethods, loadingDIDMethods)"
-            :loading="loadingDIDMethods.value" />
-        <Button id="getVCStores" label="Get VC stores" @click="getVCStores()" :visible="false" />
-        <!--<Dropdown v-model="mmStore.currDIDMethod" :options="mmStore.availableMethods"
-            @change="changeDIDMethod(undefined, $event)" optionLabel="text" />-->
-        <div class="infuraInput">
-            <InputText id="infuraToken" type="text" placeholder="Input infura token" />
-            <wrappedButton label="Change infura token" :method="changeInfuraToken" />
+        <div class="settingsContent">
+            <div class="popups">
+                <p>Used for toggling the built-in Metamask popups: </p>
+                <wrappedButton id="togglePopups" label="Toggle popups" :method="togglePopups" />
+            </div>
+
+            <div class="infuraInput">
+                <InputText id="infuraToken" type="text" placeholder="Input infura token" />
+                <wrappedButton label="Change infura token" :method="changeInfuraToken" />
+            </div>
         </div>
-        <div>Selected: {{ mmStore.currDIDMethod }}</div>
     </div>
 </template>
 
 <script setup lang="ts">
 import wrappedButton from '@/components/wrappedButton.vue';
-import { reactive } from 'vue';
 import { useGeneralStore } from '@/stores/general';
 import { useMetamaskStore } from '@/stores/metamask';
-import { funcWrapper } from '@/util/general';
 import type { ToastServiceMethods } from 'primevue/toastservice';
 import type InputText from 'primevue/inputtext';
-
-const loadingDIDMethods = reactive({ value: false });
 
 const mmStore = useMetamaskStore();
 const generalStore = useGeneralStore();
@@ -96,8 +91,24 @@ function log(value: any) {
 .settings {
     margin: 0 auto;
     max-width: 1000px;
-    padding: 0 1rem;
     border: 1px solid red;
+}
+
+.settingsContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid blue;
+}
+
+.settingsContent * {
+    margin: 0.5rem 1rem;
+}
+
+.popups {
+    display: flex;
+    align-items: center;
 }
 
 #title {

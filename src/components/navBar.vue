@@ -21,5 +21,11 @@ function onTabChange(e: any) {
 </script>
 
 <style>
+.p-reset {
+    padding: 0 2rem !important;
+}
 
+.p-tabmenu-nav {
+    padding: 0 2rem !important;
+}
 </style>

@@ -5,12 +5,12 @@
         <img alt="SSI logo" class="logo" src="https://blockchain-lab-um.github.io/ssi-snap-docs/img/ssi_snap_logo_2.svg"
           width="100" height="100" />
       </div>-->
-      <div class="col-6">
+      <div class="col-6 mainTitle">
         <greetingTitle msg="SSI Snap dApp" />
       </div>
-      <div class="col-* mmCenter" >
-          <didSelector />
-          <mmButton />
+      <div class="col-* mmCenter">
+        <didSelector />
+        <mmButton />
       </div>
     </div>
     <div class="wrapper">
@@ -35,8 +35,8 @@ generalStore.toast = useToast();
 </script>
 
 <style scoped>
-html {
-  padding: 0rem 1rem 0rem 1rem;
+.col-6 {
+  padding: 0rem 1.5rem !important;
 }
 
 .nav {
@@ -48,7 +48,7 @@ html {
 }
 
 .mmCenter {
-  margin-right: 1rem;
+  margin-right: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
