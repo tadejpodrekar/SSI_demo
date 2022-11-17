@@ -32,12 +32,12 @@ const openPage = (url: string) => {
 <style lang="scss" scoped>
 .about {
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 1000px;
   padding: 0 1rem;
   border: 1px solid red;
 }
 
-.title {
+#title {
   text-align: center;
 }
 

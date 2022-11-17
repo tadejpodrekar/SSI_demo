@@ -6,7 +6,7 @@
           width="100" height="100" />
       </div>-->
       <div class="col-6">
-        <greetingTitle msg="SSI Snap Demo" />
+        <greetingTitle msg="SSI Snap dApp" />
       </div>
       <div class="col-* mmCenter" >
         <mmButton />

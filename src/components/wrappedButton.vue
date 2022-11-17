@@ -1,6 +1,6 @@
 <template>
   <Button :label="label" :loading="isLoading.value" v-if="condition" @click="funcWrapper(toast, method, isLoading)"
-    :class="cssClass" />
+    :class="cssClass" :icon="icon" />
 </template>
   
 <script setup lang="ts">
@@ -25,7 +25,11 @@ defineProps({
   cssClass: {
     type: String,
     required: false,
-  }
+  },
+  icon: {
+    type: String,
+    required: false,
+  },
 });
 
 const generalStore = useGeneralStore();

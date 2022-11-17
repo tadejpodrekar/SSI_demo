@@ -6,6 +6,11 @@ import Textarea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
 import Toast from "primevue/toast";
 import Chip from "primevue/chip";
+import DataTable from "primevue/datatable";
+import Column from 'primevue/column';
+import ColumnGroup from 'primevue/columngroup';
+import Row from 'primevue/row';
+import Dialog from 'primevue/dialog';
 
 export const primeVueComponents = {
   PrimeVue,
@@ -16,4 +21,9 @@ export const primeVueComponents = {
   Dropdown,
   Toast,
   Chip,
+  DataTable,
+  Column,
+  ColumnGroup,
+  Row,
+  Dialog
 };

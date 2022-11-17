@@ -118,12 +118,12 @@ function log(value: any) {
 <style scoped>
 .settings {
     margin: 0 auto;
-    max-width: 800px;
+    max-width: 1000px;
     padding: 0 1rem;
     border: 1px solid red;
 }
 
-.title {
+#title {
     text-align: center;
 }
 </style>

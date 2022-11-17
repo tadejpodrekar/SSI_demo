@@ -9,7 +9,7 @@
       <WrappedButton label='Create VC' :method="VCCreate" cssClass="p-button-sm" />
       <WrappedButton label='Create VP' :method="VPCreate" cssClass="p-button-sm" />
     </div>
-    <button @click="testDIDMethods(mmStore.snapApi)">Test</button>
+    <!--<button @click="testDIDMethods(mmStore.snapApi)">Test</button>--->
   </div>
 </template>
 
@@ -72,7 +72,7 @@ const VPCreate = async () => {
 
 <style>
 /* center the h1 content */
-.title {
+#title {
   text-align: center;
 }
 
@@ -82,7 +82,7 @@ const VPCreate = async () => {
 
 .home {
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 1000px;
   padding: 0 1rem;
   border: 1px solid red;
 }

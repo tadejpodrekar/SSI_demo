@@ -25,7 +25,12 @@ app
     .component("Textarea", primeVueComponents.Textarea)
     .component("Toast", primeVueComponents.Toast)
     .component("Dropdown", primeVueComponents.Dropdown)
-    .component("Chip", primeVueComponents.Chip);
+    .component("Chip", primeVueComponents.Chip)
+    .component("DataTable", primeVueComponents.DataTable)
+    .component("Column", primeVueComponents.Column)
+    .component("ColumnGroup", primeVueComponents.ColumnGroup)
+    .component("Row", primeVueComponents.Row)
+    .component("Dialog", primeVueComponents.Dialog);
 
 app.use(primeVueComponents.ToastService);
 

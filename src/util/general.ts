@@ -48,3 +48,11 @@ export const funcWrapper = async (
   }
   loading.value = false;
 };
+
+export const ISOtoLocaleString = (ISODateTime: string) => {
+  if (!ISODateTime) return;
+  return new Date(ISODateTime).toLocaleString('en', {
+    hour12: false,
+    timeZone: 'UTC'
+  });
+}

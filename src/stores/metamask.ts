@@ -11,7 +11,7 @@ export const useMetamaskStore = defineStore("metamask", () => {
   const currDIDMethod = ref<DIDMethod | undefined>(undefined);
   const availableMethods = ref<DIDMethod[] | undefined>(undefined);
   const verifiableCredential = ref<VerifiableCredential | undefined>(undefined);
-  const vcs = ref<VerifiableCredential[] | undefined>(undefined);
+  const vcs = ref<VerifiableCredential[]>([] as VerifiableCredential[]);
 
   // Read only values
   const vcIssuerId = computed(() => {
