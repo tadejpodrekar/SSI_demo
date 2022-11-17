@@ -29,7 +29,7 @@ const changeDIDMethod = async (method?: string, event?: any) => {
       if (did) mmStore.DID = did;
       isLoading.value = false;
       toast.add({ severity: 'success', summary: 'Success', detail: 'Success changing DID method.', group: 'br', life: 3000 });
-      console.log('Success changing DID method.');
+      // console.log('Success changing DID method.');
       return;
     }
     mmStore.currDIDMethod = createDIDMethod(mmStore.didMethodString);

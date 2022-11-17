@@ -34,14 +34,12 @@ const openPage = (url: string) => {
   margin: 0 auto;
   max-width: 1000px;
   padding: 0 1rem;
-  border: 1px solid red;
 }
 
 #title {
   text-align: center;
 }
 
-/* center the item in the template div */
 .template {
   display: flex;
   justify-content: center;

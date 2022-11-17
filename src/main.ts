@@ -6,7 +6,6 @@ import { primeVueComponents } from "./util/primeVue";
 import App from "./App.vue";
 import router from "./router";
 
-//import "./assets/main.css";
 import "./assets/default.css";
 import 'primevue/resources/themes/tailwind-light/theme.css';
 import 'primevue/resources/primevue.min.css';

@@ -1,10 +1,6 @@
 <template>
   <header>
     <div class="grid nav">
-      <!--<div class="col-fixed" style="width:100px">
-        <img alt="SSI logo" class="logo" src="https://blockchain-lab-um.github.io/ssi-snap-docs/img/ssi_snap_logo_2.svg"
-          width="100" height="100" />
-      </div>-->
       <div class="col-6 mainTitle">
         <greetingTitle msg="SSI Snap dApp" />
       </div>
@@ -24,11 +20,11 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import { useGeneralStore } from "@/stores/general";
+import { useToast } from 'primevue/usetoast';
 import greetingTitle from "./components/greetingTitle.vue";
 import didSelector from "./components/didSelector.vue";
 import navBar from "./components/navBar.vue";
 import mmButton from "./components/mmButton.vue";
-import { useToast } from 'primevue/usetoast';
 
 const generalStore = useGeneralStore();
 generalStore.toast = useToast();

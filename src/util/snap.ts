@@ -10,15 +10,13 @@ import type {
 } from "./interfaces";
 
 const backend_url = "https://bclabum.informatika.uni-mb.si/ssi-demo-backend";
-const vcIssuerId =
-  "did:ethr:rinkeby:0x0241abd662da06d0af2f0152a80bc037f65a7f901160cfe1eb35ef3f0c532a2a4d";
 
 export async function installSnap(
   snapId?: string,
   supportedMethods?: ("did:ethr" | "did:key")[]
 ): Promise<SnapInitializationResponse> {
   try {
-    console.log("Connecting to snap...");
+    // console.log("Connecting to snap...");
     if (!supportedMethods) supportedMethods = ["did:ethr", "did:key"];
     const snapInstallationParams: SnapInstallationParams = {
       version: "latest",
@@ -30,7 +28,7 @@ export async function installSnap(
 
     const metamaskSSISnap = await enableSSISnap(snapInstallationParams);
 
-    console.log("Snap installed!");
+    // console.log("Snap installed!");
     return {
       isSnapInstalled: true,
       snap: metamaskSSISnap,
@@ -45,7 +43,6 @@ export async function checkForVCs(snapApi?: SSISnapApi) {
   try {
     if (!snapApi) throw new Error("No snap API found.");
     const vcs = await snapApi.getVCs();
-    console.log("🚀 ~ file: snap.ts ~ line 44 ~ checkForVCs ~ vcs", vcs);
     if (!vcs.length) {
       throw new Error("No VCs found.");
     }
@@ -81,15 +78,10 @@ export async function createVC(
       .catch((error: any) => {
         console.log(error);
       });
-    console.log("🚀 ~ file: mmButton.vue ~ line 52 ~ connectToMM ~ VC", VC);
 
     const res = await saveVC(VC, snapApi);
     if (res) {
       const validVCs = await checkForVCs(snapApi);
-      console.log(
-        "🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs",
-        validVCs
-      );
       if (validVCs) {
         return validVCs;
       }
@@ -104,10 +96,10 @@ export async function saveVC(VC: VerifiableCredential, snapApi?: SSISnapApi) {
     if (!snapApi) throw new Error("No snap API found.");
     const res = await snapApi?.saveVC(VC);
     if (res) {
-      console.log("Saved VC.");
+      // console.log("Saved VC.");
       return true;
     } else {
-      console.log("VC not saved.");
+      // console.log("VC not saved.");
       return false;
     }
   } catch (err) {
@@ -121,29 +113,15 @@ export async function createVP(VC: VerifiableCredential, snapApi?: SSISnapApi) {
     if (!snapApi) throw new Error("No snap API found.");
     const res = await snapApi?.getVP(VC.key);
     if (res) {
-      console.log("Created VP.");
+      // console.log("Created VP.");
       return res;
     } else {
-      console.log("VP not created.");
-      return undefined;
+      // console.log("VP not created.");
+      throw new Error("VP not created.");
     }
   } catch (err) {
     console.error(err);
-    return undefined;
-  }
-}
-
-export async function testDIDMethods(snapApi?: SSISnapApi) {
-  try {
-    if (!snapApi) throw new Error("No snap API found.");
-    const [did, availableMethods] = await Promise.all([
-      snapApi.getDID(),
-      snapApi.getAvailableMethods(),
-    ]);
-    console.log(did);
-    console.log(availableMethods);
-  } catch (error) {
-    console.error(error);
+    throw err;
   }
 }
 

@@ -20,22 +20,9 @@ const generalStore = useGeneralStore();
 const openVCCourse = () => {
   generalStore.courseStarted = true;
 }
-
-const testFunc = async () => {
-  try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    throw new Error('Test error');
-    return 'success';
-  } catch (error) {
-    console.error;
-    throw error;
-  }
-}
-
 </script>
 
 <style>
-/* center the h1 content */
 #title {
   text-align: center;
 }
@@ -44,7 +31,6 @@ const testFunc = async () => {
   margin: 0 auto;
   max-width: 1000px;
   padding: 0 1rem;
-  border: 1px solid red;
 }
 
 .content {

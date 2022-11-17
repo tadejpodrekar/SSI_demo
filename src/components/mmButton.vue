@@ -10,7 +10,6 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { installSnap, initStore } from "../util/snap";
 import { useMetamaskStore } from "@/stores/metamask";
-// import Button from 'primevue/button';
 
 const mmStore = useMetamaskStore();
 const router = useRouter();
@@ -22,12 +21,13 @@ async function connectToMM() {
     window.ethereum
       .request({ method: "eth_requestAccounts" })
       .then((result: (string | undefined)[]) => {
-        console.log("Setting MetaMask address!");
+        // console.log("Setting MetaMask address!");
         mmStore.mmAddress = result[0];
       })
       .catch((err: Error) => {
         isLoading.value = false;
         console.error(err);
+        return;
       });
 
     try {

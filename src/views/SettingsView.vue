@@ -36,37 +36,12 @@ async function togglePopups() {
     }
 };
 
-async function getDIDMethods() {
-    try {
-        const methods = await mmStore.snapApi?.getAvailableMethods();
-        if (methods) {
-            console.log(methods);
-        }
-    } catch (error: any) {
-        throw new Error(error.message);
-    }
-};
-
-const testDIDChange = async (method: string, event?: any) => {
-    try {
-        console.log(event)
-        return 'Success changing DID method';
-    } catch (error) {
-        throw error;
-    }
-};
-
-async function getVCStores() {
-    const vcStores = await mmStore.snapApi?.getAvailableVCStores();
-    if (vcStores) console.log('🚀 ~ file: SettingsView.vue ~ line 45 ~ getVCStores ~ vcStores', vcStores);
-};
-
 async function changeInfuraToken() {
     try {
         const infuraInput = document.getElementById('infuraToken');
         infuraInput?.classList.remove('p-invalid');
         const infuraToken = (infuraInput as HTMLInputElement)?.value;
-        console.log('🚀 ~ file: SettingsView.vue ~ line 49 ~ changeInfuraToken ~ infuraToken', infuraToken);
+        //console.log('🚀 ~ file: SettingsView.vue ~ line 49 ~ changeInfuraToken ~ infuraToken', infuraToken);
         if (!infuraToken) {
             infuraInput?.classList.add('p-invalid');
             return;
@@ -80,18 +55,12 @@ async function changeInfuraToken() {
         throw error;
     }
 };
-
-function log(value: any) {
-    console.log('🚀 ~ file: SettingsView.vue ~ line 44 ~ log ~ value', value?.target?.value);
-    console.log(value);
-}
 </script>
 
 <style scoped>
 .settings {
     margin: 0 auto;
     max-width: 1000px;
-    border: 1px solid red;
 }
 
 .settingsContent {
@@ -99,7 +68,6 @@ function log(value: any) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1px solid blue;
 }
 
 .settingsContent * {

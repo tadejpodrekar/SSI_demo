@@ -36,8 +36,6 @@ export const useMetamaskStore = defineStore("metamask", () => {
       : undefined;
   });
 
-  // Mutations - write as function export
-
   return {
     snapInstalled,
     mmAddress,

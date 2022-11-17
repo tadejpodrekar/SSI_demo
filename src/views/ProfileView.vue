@@ -9,7 +9,6 @@
             Verifiable Credentials
             <div class="dtButtons">
               <Button @click="openModal" label="Import VC" icon="pi pi-file-import" />
-              <!--<wrappedButton label="Import VC" :method="importVC" icon="pi pi-file-import" />-->
               <wrappedButton label="Load VCs" :method="loadVCs" icon="pi pi-refresh" />
               <wrappedButton label="Create VP" :method="vpCreate" icon="pi pi-upload" />
             </div>
@@ -36,10 +35,6 @@
         <wrappedButton label="Import" :method="importVC" icon="pi pi-check" />
       </template>
     </Dialog>
-    <!--<div>
-      <Textarea v-model="VCImport" rows="5" cols="30" />
-      <wrappedButton label="Import VC" :method="importVC" />
-    </div>-->
   </div>
 </template>
 
@@ -70,7 +65,7 @@ const loadVCs = async () => {
     const validVCs = await checkForVCs(
       mmStore.snapApi
     );
-    console.log("🚀 ~ file: ProfileView.vue ~ line 36 ~ loadVCs ~ validVCs", validVCs);
+    // console.log("🚀 ~ file: ProfileView.vue ~ line 36 ~ loadVCs ~ validVCs", validVCs);
     if (validVCs) {
       mmStore.vcs = validVCs;
     }
@@ -87,7 +82,7 @@ const vpCreate = async () => {
       throw new Error('No VC selected');
     }
     const vp = await createVP(selectedVC.value, mmStore.snapApi);
-    console.log('🚀 ~ file: HomeView.vue ~ line 32 ~ VPCreate ~ res', vp);
+    // console.log('🚀 ~ file: HomeView.vue ~ line 32 ~ VPCreate ~ res', vp);
     if (!vp) {
       throw new Error('Failed to create VP');
     }
@@ -104,11 +99,11 @@ const importVC = async () => {
   } catch (err: any) {
     throw err;
   }
-  console.log('🚀 ~ file: ProfileView.vue ~ line 54 ~ importVC ~ VC', VC);
+  // console.log('🚀 ~ file: ProfileView.vue ~ line 54 ~ importVC ~ VC', VC);
   try {
     const res = await saveVC(VC, mmStore.snapApi);
     if (!res) throw new Error('Failed to save VC');
-    console.log('🚀 ~ file: ProfileView.vue ~ line 48 ~ importVC ~ res', res);
+    // console.log('🚀 ~ file: ProfileView.vue ~ line 48 ~ importVC ~ res', res);
     mmStore.vcs.push(VC);
     closeModal();
     return 'Success importing VC';
@@ -140,7 +135,5 @@ const importVC = async () => {
 
 .profile {
   margin: 0 5rem;
-  
-  border: 1px solid red;
 }
 </style>
