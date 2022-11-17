@@ -2,23 +2,24 @@
   <div class="home">
     <h1 id="title" v-if="!mmStore.snapInstalled">Please connect to metamask</h1>
     <h1 id="title" v-if="mmStore.snapInstalled">Home page</h1>
-    <div v-if="mmStore.snapInstalled" id="vcForm">
-      <InputText id="nameInput" type="username" class="p-inputtext-sm" placeholder="Username" />
-      <!--<Button :loading="loadingVC.value" @click="funcWrapper(toast, VCCreate, loadingVC)" label="Create VC" class="p-button-sm" />
-            <Button :loading="loadingVP.value" @click="funcWrapper(toast, VPCreate, loadingVP)" label="Create VP" class="p-button-sm" />-->
-      <WrappedButton label='Create VC' :method="VCCreate" cssClass="p-button-sm" />
-      <WrappedButton label='Create VP' :method="VPCreate" cssClass="p-button-sm" />
+    <div class="content" v-if="mmStore.snapInstalled">
+      <Button v-if="!generalStore.courseStarted" label="Start course" @click="openVCCourse()" />
+      <vcCourse v-if="generalStore.courseStarted" />
     </div>
-    <!--<button @click="testDIDMethods(mmStore.snapApi)">Test</button>--->
   </div>
 </template>
 
 <script setup lang="ts">
+import vcCourse from '@/components/vcCourse.vue';
 import { useMetamaskStore } from '@/stores/metamask';
-import { createVC, createVP, checkForVCs, testDIDMethods } from '@/util/snap';
-import WrappedButton from '@/components/wrappedButton.vue';
+import { useGeneralStore } from '@/stores/general';
 
 const mmStore = useMetamaskStore();
+const generalStore = useGeneralStore();
+
+const openVCCourse = () => {
+  generalStore.courseStarted = true;
+}
 
 const testFunc = async () => {
   try {
@@ -31,43 +32,6 @@ const testFunc = async () => {
   }
 }
 
-const VCCreate = async () => {
-  try {
-    const nameInput = document.getElementById('nameInput');
-    nameInput?.classList.remove('p-invalid');
-    const nameInputValue = (nameInput as HTMLInputElement).value;
-    if (!nameInputValue) {
-      nameInput?.classList.add('p-invalid');
-      return;
-    }
-
-    const vcs = await createVC(nameInputValue, mmStore.mmAddress, mmStore.snapApi);
-    if (!vcs) {
-      throw new Error('Failed to create VC');
-    }
-    return 'VC created';
-  } catch (err: any) {
-    throw new Error(err.message);
-  }
-}
-
-const VPCreate = async () => {
-  try {
-    const VCs = await checkForVCs(mmStore?.snapApi);
-    if (!VCs) {
-      console.error('No VCs found.');
-      return;
-    }
-    const vp = await createVP(VCs[0], mmStore.snapApi);
-    console.log('🚀 ~ file: HomeView.vue ~ line 32 ~ VPCreate ~ res', vp);
-    if (!vp) {
-      throw new Error('Failed to create VP');
-    }
-    return 'VP created';
-  } catch (err: any) {
-    throw new Error(err.message);
-  }
-}
 </script>
 
 <style>
@@ -76,15 +40,16 @@ const VPCreate = async () => {
   text-align: center;
 }
 
-#vcForm>* {
-  margin: 0rem 0.5rem 0rem 0.5rem;
-}
-
 .home {
   margin: 0 auto;
   max-width: 1000px;
   padding: 0 1rem;
   border: 1px solid red;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
 }
 </style>
   

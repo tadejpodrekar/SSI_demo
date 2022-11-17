@@ -166,23 +166,27 @@ export async function testDIDMethods(snapApi?: SSISnapApi) {
   }
 }
 
+export function createDIDMethod(DID?: string) {
+  if (!DID) return undefined;
+  const splitDID = DID.split(":");
+  if (splitDID.length < 2) return undefined;
+  const didName = splitDID[1];
+  return {
+    value: splitDID[0] + ":" + splitDID[1],
+    text: didName.charAt(0).toUpperCase() + didName.slice(1),
+  };
+}
+
 export async function initStore(snapApi: SSISnapApi) {
   try {
     const [did, methods] = await Promise.all([
       snapApi.getDID(),
       snapApi.getAvailableMethods(),
     ]);
-    console.log("🚀 ~ file: snap.ts ~ line 158 ~ initStore ~ methods", methods);
-    console.log("🚀 ~ file: snap.ts ~ line 158 ~ initStore ~ did", did);
 
     let currDIDMethod, availableMethods;
     if (did) {
-      const splitDID = did.split(":");
-      const didName = splitDID[1];
-      currDIDMethod = {
-        value: splitDID[0] + ":" + splitDID[1],
-        text: didName.charAt(0).toUpperCase() + didName.slice(1),
-      };
+      currDIDMethod = createDIDMethod(did);
     }
     if (methods) {
       availableMethods = methods.map((method) => {

@@ -9,7 +9,8 @@
         <greetingTitle msg="SSI Snap dApp" />
       </div>
       <div class="col-* mmCenter" >
-        <mmButton />
+          <didSelector />
+          <mmButton />
       </div>
     </div>
     <div class="wrapper">
@@ -24,6 +25,7 @@
 import { RouterView } from "vue-router";
 import { useGeneralStore } from "@/stores/general";
 import greetingTitle from "./components/greetingTitle.vue";
+import didSelector from "./components/didSelector.vue";
 import navBar from "./components/navBar.vue";
 import mmButton from "./components/mmButton.vue";
 import { useToast } from 'primevue/usetoast';
@@ -50,5 +52,9 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.mmCenter * {
+  margin: 0rem 0.5rem;
 }
 </style>

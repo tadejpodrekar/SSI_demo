@@ -140,7 +140,7 @@ const importVC = async () => {
 
 .profile {
   margin: 0 auto;
-  padding: 0 4rem;
+  padding: 0 10rem;
   border: 1px solid red;
 }
 </style>

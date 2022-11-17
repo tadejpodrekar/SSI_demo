@@ -30,7 +30,7 @@ export const useMetamaskStore = defineStore("metamask", () => {
       : "No DID";
   });
 
-  const didMethodsString = computed(() => {
+  const didMethodString = computed(() => {
     return DID.value
       ? DID.value.split(":")[0] + ":" + DID.value.split(":")[1]
       : undefined;
@@ -44,7 +44,7 @@ export const useMetamaskStore = defineStore("metamask", () => {
     mmAddressString,
     snapApi,
     DID,
-    didMethodsString,
+    didMethodString,
     currDIDMethod,
     availableMethods,
     verifiableCredential,

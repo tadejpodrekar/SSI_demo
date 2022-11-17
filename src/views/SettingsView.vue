@@ -1,13 +1,13 @@
 <template>
     <div class="settings">
-        <h1 id="title">This is a settings page</h1>
-
+        <h1 id="title">SSI Snap Configuration</h1>
+        <div class="popups"></div>
         <wrappedButton id="togglePopups" label="Toggle popups" :method="togglePopups" />
         <Button id="getDIDMethods" label="Get DID methods" @click="funcWrapper(toast, getDIDMethods, loadingDIDMethods)"
             :loading="loadingDIDMethods.value" />
         <Button id="getVCStores" label="Get VC stores" @click="getVCStores()" :visible="false" />
-        <Dropdown v-model="mmStore.currDIDMethod" :options="mmStore.availableMethods"
-            @change="changeDIDMethod(undefined, $event)" optionLabel="text" />
+        <!--<Dropdown v-model="mmStore.currDIDMethod" :options="mmStore.availableMethods"
+            @change="changeDIDMethod(undefined, $event)" optionLabel="text" />-->
         <div class="infuraInput">
             <InputText id="infuraToken" type="text" placeholder="Input infura token" />
             <wrappedButton label="Change infura token" :method="changeInfuraToken" />
@@ -28,11 +28,6 @@ import type InputText from 'primevue/inputtext';
 const loadingDIDMethods = reactive({ value: false });
 
 const mmStore = useMetamaskStore();
-mmStore.$subscribe((mutation, state) => {
-    //console.log('🚀 ~ file: SettingsView.vue ~ line 23 ~ mmStore.$subscribe ~ state', state);
-    //console.log('🚀 ~ file: SettingsView.vue ~ line 23 ~ mmStore.$subscribe ~ mutation', mutation?.events?.newValue?.value);
-    //changeDIDMethod(mutation?.events?.newValue?.value);
-});
 const generalStore = useGeneralStore();
 const toast = generalStore.toast as ToastServiceMethods;
 
@@ -63,24 +58,6 @@ const testDIDChange = async (method: string, event?: any) => {
         return 'Success changing DID method';
     } catch (error) {
         throw error;
-    }
-};
-
-const changeDIDMethod = async (method?: string, event?: any) => {
-    try {
-        if (event.value.value === mmStore?.didMethodsString) return;
-        if (!method) method = mmStore.currDIDMethod?.value;
-        if (!method) throw new Error('No method selected');
-        const res = await mmStore.snapApi?.switchMethod(method);
-        if (res) {
-            const did = await mmStore.snapApi?.getDID();
-            if (did) mmStore.DID = did;
-            toast.add({ severity: 'success', summary: 'Success', detail: 'Success changing DID method.', group: 'br', life: 3000 });
-            console.log('Success changing DID method.');
-        }
-    } catch (error: any) {
-        console.error(error);
-        toast.add({ severity: 'error', summary: 'Error', detail: error.message, group: 'br', life: 3000 });
     }
 };
 
