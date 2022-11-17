@@ -1,7 +1,6 @@
 <template>
   <div class="about">
     <h1 id="title">About SSI Snap Demo</h1>
-    <p>Testing text</p>
     <div class="template">
       <Button class="discord p-0" aria-label="Discord" @click="openPage('https://discord.com/invite/M5xgNz7TTF')">
         <i class="pi pi-discord px-2"></i>
