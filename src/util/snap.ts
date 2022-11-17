@@ -41,36 +41,17 @@ export async function installSnap(
   }
 }
 
-export async function checkForVCs(snapApi?: SSISnapApi, mmAddress?: string) {
+export async function checkForVCs(snapApi?: SSISnapApi) {
   try {
     if (!snapApi) throw new Error("No snap API found.");
     const vcs = await snapApi.getVCs();
     console.log("🚀 ~ file: snap.ts ~ line 44 ~ checkForVCs ~ vcs", vcs);
     if (!vcs.length) {
-      console.log("No VCs found.");
-      return undefined;
+      throw new Error("No VCs found.");
     }
-    // if (mmAddress) {
-    //     vcs.map((vc: any) => {
-    //         console.log(
-    //             vc.credentialSubject.id.split(":")[3].toString().toUpperCase(),
-    //             mmAddress,
-    //             vcIssuerId.toUpperCase(),
-    //             vc.issuer.id.toString().toUpperCase()
-    //         );
-    //         if (
-    //             vc.credentialSubject.id.split(":")[3].toString().toUpperCase() ===
-    //             mmAddress.toUpperCase() &&
-    //             vc.issuer.id.toString().toUpperCase() === vcIssuerId.toUpperCase()
-    //         ) {
-    //             console.log("Valid VC found!");
-    //         }
-    //     });
-    // }
     return vcs as VerifiableCredential[];
   } catch (err: any) {
-    console.error(err.message);
-    return undefined;
+    throw err;
   }
 }
 
@@ -104,7 +85,7 @@ export async function createVC(
 
     const res = await saveVC(VC, snapApi);
     if (res) {
-      const validVCs = await checkForVCs(snapApi, mmAddress);
+      const validVCs = await checkForVCs(snapApi);
       console.log(
         "🚀 ~ file: mmButton.vue ~ line 36 ~ connectToMM ~ validVCs",
         validVCs

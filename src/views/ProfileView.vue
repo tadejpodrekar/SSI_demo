@@ -2,14 +2,15 @@
   <div class="profile">
     <h1 id="title">Available VCs</h1>
     <div>
-      <DataTable :value="mmStore.vcs" responsiveLayout="scroll" removableSort v-model:selection="selectedVC" selectionMode="single" dataKey="id">
+      <DataTable :value="mmStore.vcs" responsiveLayout="scroll" removableSort v-model:selection="selectedVC"
+        selectionMode="single" dataKey="id">
         <template #header>
           <div class="table-header">
             Verifiable Credentials
             <div class="dtButtons">
               <Button @click="openModal" label="Import VC" icon="pi pi-file-import" />
               <!--<wrappedButton label="Import VC" :method="importVC" icon="pi pi-file-import" />-->
-              <wrappedButton label="Load VCs" :method="logVCs" icon="pi pi-refresh" />
+              <wrappedButton label="Load VCs" :method="loadVCs" icon="pi pi-refresh" />
               <wrappedButton label="Create VP" :method="vpCreate" icon="pi pi-upload" />
             </div>
 
@@ -64,13 +65,12 @@ const closeModal = () => {
   displayModal.value = false;
 }
 
-const logVCs = async () => {
+const loadVCs = async () => {
   try {
     const validVCs = await checkForVCs(
-      mmStore.snapApi,
-      mmStore.mmAddress
+      mmStore.snapApi
     );
-    console.log("🚀 ~ file: ProfileView.vue ~ line 36 ~ logVCs ~ validVCs", validVCs);
+    console.log("🚀 ~ file: ProfileView.vue ~ line 36 ~ loadVCs ~ validVCs", validVCs);
     if (validVCs) {
       mmStore.vcs = validVCs;
     }
@@ -83,7 +83,7 @@ const logVCs = async () => {
 
 const vpCreate = async () => {
   try {
-    if(!selectedVC.value) {
+    if (!selectedVC.value) {
       throw new Error('No VC selected');
     }
     const vp = await createVP(selectedVC.value, mmStore.snapApi);
