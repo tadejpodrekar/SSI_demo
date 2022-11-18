@@ -30,10 +30,8 @@ app
   .component('ColumnGroup', primeVueComponents.ColumnGroup)
   .component('Row', primeVueComponents.Row)
   .component('Dialog', primeVueComponents.Dialog)
-  .component('InputSwitch', primeVueComponents.InputSwitch)
-  .component('ProgressSpinner', primeVueComponents.ProgressSpinner);
+  .component('InputSwitch', primeVueComponents.InputSwitch);
 
 app.use(primeVueComponents.ToastService);
-app.directive('tooltip', primeVueComponents.Tooltip);
 
 app.mount('#app');
